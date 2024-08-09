@@ -1,14 +1,15 @@
+package model;
+
 public class SubTask extends Task {
     private final int epicId;
 
-    public SubTask(String name, String overview, int epicId) {
-        super(name, overview);
-        this.status = TaskStatus.NEW;
+    public SubTask(String name, String description, int epicId) {
+        super(name, description);
         this.epicId = epicId;
     }
 
-    public SubTask(String name, String overview, TaskStatus status, int epicId, int id) {
-        super(name, overview, status);
+    public SubTask(String name, String description, TaskStatus status, int epicId, int id) {
+        super(name, description, status);
         this.id = id;
         this.epicId = epicId;
     }
@@ -22,7 +23,7 @@ public class SubTask extends Task {
         return "подзадача{" +
                 "Эпик=" + epicId +
                 ", название задачи='" + name + '\'' +
-                ", описание='" + overview + '\'' +
+                ", описание='" + description + '\'' +
                 ", идентификатор=" + id +
                 ", статус=" + status +
                 '}';

@@ -1,35 +1,37 @@
+package model;
+
 import java.util.Objects;
 
 public class Task {
     protected String name;
     protected int id;
     protected TaskStatus status;
-    protected String overview;
+    protected String description;
 
-    public Task(String name, String overview) {
+    public Task(String name, String description) {
         this.name = name;
-        this.overview = overview;
+        this.description = description;
         this.status = TaskStatus.NEW;
     }
 
-    public Task(String name, String overview, TaskStatus status) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
-        this.overview = overview;
+        this.description = description;
         this.status = status;
     }
 
-    public Task(String name, String overview, TaskStatus status, int id) {
+    public Task(String name, String description, TaskStatus status, int id) {
         this.name = name;
-        this.overview = overview;
+        this.description = description;
         this.status = status;
         this.id = id;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -49,12 +51,12 @@ public class Task {
         this.status = status;
     }
 
-    public String getoverview() {
-        return overview;
+    public String getDescription() {
+        return description;
     }
 
-    public void setoverview(String overview) {
-        this.overview = overview;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -74,10 +76,9 @@ public class Task {
     public String toString() {
         return "Задача{" +
                 "название задачи='" + name + '\'' +
-                ", описание='" + overview + '\'' +
+                ", описание='" + description + '\'' +
                 ", идентификатор=" + id +
                 ", статус=" + status +
                 '}';
-
     }
 }

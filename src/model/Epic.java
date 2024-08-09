@@ -1,16 +1,17 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> epicSubTasksId = new ArrayList<>();
 
-    public Epic(String name, String overview) {
-        super(name, overview, TaskStatus.NEW);
-
+    public Epic(String name, String description) {
+        super(name, description, TaskStatus.NEW);
     }
 
-    public Epic(String name, String overview, int id) {
-        super(name, overview, TaskStatus.NEW, id);
+    public Epic(String name, String description, int id) {
+        super(name, description, TaskStatus.NEW, id);
         this.id = id;
     }
 
@@ -26,7 +27,6 @@ public class Epic extends Task {
         epicSubTasksId.clear();
     }
 
-
     public void deleteSubTaskById(int subTaskId) {
         epicSubTasksId.remove(Integer.valueOf(subTaskId));
     }
@@ -36,7 +36,7 @@ public class Epic extends Task {
         return "Эпик{" +
                 "подзадачи эпика=" + epicSubTasksId +
                 ", название задачи='" + name +
-                '\'' + ", описание='" + overview +
+                '\'' + ", описание='" + description +
                 '\'' + ", идентификатор=" + id +
                 ", статус=" + status + '}';
     }
