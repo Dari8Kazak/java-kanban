@@ -3,12 +3,13 @@ import model.SubTask;
 import model.Task;
 import model.TaskStatus;
 import service.TaskManager;
-
+import service.InMemoryTaskManager;
+import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = new TaskManager();
+        TaskManager manager = new InMemoryTaskManager();
 
         Task task1 = new Task("Пробежка", "Легкий бег");
         Task task2 = new Task("Упражнения", "ОФП");
@@ -34,7 +35,7 @@ public class Main {
         manager.updateTask(new Task("Упражнения", "интервалы", TaskStatus.IN_PROGRESS, 1));
         manager.updateEpic(new Epic("Полумарафон", "мед. справка", 2));
         manager.updateEpic(new Epic("Марафон", "регистрация", 3));
-        manager.updateSubTask(new SubTask("Подготовка", "Обновление 1", TaskStatus.IN_PROGRESS, 2, 4));
+        manager.updateSubTask(new SubTask("Подготовка", "Обновление 1", TaskStatus.DONE, 2, 4));
         manager.updateSubTask(new SubTask("Экипировка", "Обновление 1", TaskStatus.IN_PROGRESS, 2, 5));
         manager.updateSubTask(new SubTask("Подведение", "Обновление 1", TaskStatus.DONE, 3, 6));
 
