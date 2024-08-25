@@ -1,7 +1,4 @@
-package service;
-
-import service.InMemoryHistoryManager;
-import service.InMemoryTaskManager;
+package Service;
 
 public class Managers {
 

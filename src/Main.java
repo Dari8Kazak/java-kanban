@@ -1,31 +1,15 @@
-import model.Epic;
-import model.SubTask;
-import model.Task;
-import model.TaskStatus;
-import service.TaskManager;
-import service.InMemoryTaskManager;
-import java.util.List;
+import Model.Epic;
+import Model.SubTask;
+import Model.Task;
+import Model.TaskStatus;
+import Service.TaskManager;
+import Service.InMemoryTaskManager;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = new InMemoryTaskManager();
-
-        Task task1 = new Task("Пробежка", "Легкий бег");
-        Task task2 = new Task("Упражнения", "ОФП");
-        Epic epic1 = new Epic("Полумарафон", "21 км");
-        Epic epic2 = new Epic("Марафон", "42 км");
-        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", 2);
-        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", 2);
-        SubTask subTask3 = new SubTask("Подведение", "Диета", 3);
-
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addEpic(epic1);
-        manager.addEpic(epic2);
-        manager.addSubTask(subTask1);
-        manager.addSubTask(subTask2);
-        manager.addSubTask(subTask3);
+        TaskManager manager = getTaskManager();
 
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
@@ -49,5 +33,26 @@ public class Main {
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
+    }
+
+    private static TaskManager getTaskManager() {
+        TaskManager manager = new InMemoryTaskManager();
+
+        Task task1 = new Task("Пробежка", "Легкий бег");
+        Task task2 = new Task("Упражнения", "ОФП");
+        Epic epic1 = new Epic("Полумарафон", "21 км");
+        Epic epic2 = new Epic("Марафон", "42 км");
+        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", 2);
+        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", 2);
+        SubTask subTask3 = new SubTask("Подведение", "Диета", 3);
+
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addEpic(epic1);
+        manager.addEpic(epic2);
+        manager.addSubTask(subTask1);
+        manager.addSubTask(subTask2);
+        manager.addSubTask(subTask3);
+        return manager;
     }
 }

@@ -1,7 +1,7 @@
-package model;
+package Model;
 
 public class SubTask extends Task {
-    private final int epicId;
+    private int epicId;
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
@@ -16,6 +16,12 @@ public class SubTask extends Task {
 
     public int getEpicId() {
         return epicId;
+    }
+    public void setEpicId(int epicId) {
+        if (epicId == this.id) {
+            throw new IllegalArgumentException("Subtask не может быть добавлен как его собственный Epic.");
+        }
+        this.epicId = epicId;
     }
 
     @Override
