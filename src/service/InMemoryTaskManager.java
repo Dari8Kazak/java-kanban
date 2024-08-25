@@ -1,9 +1,9 @@
-package Service;
+package service;
 
-import Model.Epic;
-import Model.SubTask;
-import Model.Task;
-import Model.TaskStatus;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +13,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    private static int id;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private static int id;
 
     @Override
     public List<Task> getAllTasks() {
@@ -29,26 +29,24 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskById(int taskId) {
-        return tasks.get(taskId);
+    public Task getTaskById(int id) {
+        return tasks.get(id);
     }
 
     @Override
-
-
     public int addTask(Task task) {
         if (task != null) {
-            int taskId = task.getId();
-            if (tasks.containsKey(taskId)) {
-                throw new IllegalArgumentException("Задача с таким ID уже существует.");
+            if (tasks.containsKey(task.getId())) {
+                return -1;
+            } else {
+                task.setId(generateNewId());
+                tasks.put(task.getId(), task);
+                return task.getId();
             }
-            task.setId(generateNewId());
-            tasks.put(task.getId(), task);
-            return task.getId();
-        } else {
-            System.out.println("Задача не добавлена");
-            return -1;
         }
+
+        System.out.println("Задача не добавлена, так как она равна null.");
+        return -1;
     }
 
     @Override
@@ -205,6 +203,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         int isNew = 0;
+        int isIn_Progress = 0;
         int isDone = 0;
 
         List<Integer> subTasksId = epic.getEpicSubTasks();
@@ -212,6 +211,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (subTasks.get(subTaskId).getStatus() == TaskStatus.NEW) {
                 isNew++;
             } else if (subTasks.get(subTaskId).getStatus() == TaskStatus.IN_PROGRESS) {
+                isIn_Progress++;
             } else if (subTasks.get(subTaskId).getStatus() == TaskStatus.DONE) {
                 isDone++;
             }
@@ -219,15 +219,14 @@ public class InMemoryTaskManager implements TaskManager {
 
         if (isNew == subTasksId.size()) {
             epic.setStatus(TaskStatus.NEW);
-        } else if (isDone == subTasksId.size()) {
-            epic.setStatus(TaskStatus.DONE);
-        } else {
+        } else if (isIn_Progress == subTasksId.size()) {
             epic.setStatus(TaskStatus.IN_PROGRESS);
+        } else {
+            epic.setStatus(TaskStatus.DONE);
         }
     }
 
-
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }

@@ -1,8 +1,9 @@
-package Service;
+package service;
 
-import Model.Epic;
-import Model.SubTask;
-import Model.Task;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.List;
 
 public interface TaskManager {
@@ -19,9 +20,9 @@ public interface TaskManager {
 
     void deleteTaskById(int taskId);
 
-     List<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-     void deleteAllEpics();
+    void deleteAllEpics();
 
     Epic getEpicById(int epicId);
 
@@ -45,4 +46,5 @@ public interface TaskManager {
 
     void deleteSubTaskById(int subTaskId);
 
+    List<Task> getHistory();
 }

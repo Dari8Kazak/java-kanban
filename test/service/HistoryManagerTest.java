@@ -1,15 +1,12 @@
-package Test;
+package service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Model.Task;
-import Model.Epic;
-import Model.SubTask;
-import Service.InMemoryHistoryManager;
-import Service.HistoryManager;
-
+import model.Task;
+import model.Epic;
+import model.SubTask;
 import java.util.List;
 
 public class HistoryManagerTest {
@@ -28,31 +25,29 @@ public class HistoryManagerTest {
         Epic epic1 = new Epic("Полумарафон", "21 км");
         SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", epic1.getId());
 
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addEpicTask(epic1);
-        manager.addSubTask(subTask1);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(epic1);
+        manager.add(subTask1);
 
         List<Task> history = manager.getHistory();
-        if (history.size() != 4) {
-            throw new AssertionError("История должна содержать 4 задачи, но содержит " + history.size());
-        }
+
+        assertEquals(4, history.size(), "История должна содержать 4 задачи");
 
         assertTrue(history.contains(task1), "История должна содержать задачу Пробежка");
         assertTrue(history.contains(task2), "История должна содержать задачу Упражнения");
         assertTrue(history.contains(epic1), "История должна содержать эпик Полумарафон");
         assertTrue(history.contains(subTask1), "История должна содержать подзадачу Подготовка");
     }
+
     @Test
     void testHistoryContainsNoMoreThanTenElements() {
         for (int i = 1; i <= 15; i++) {
             Task task = new Task("Задача " + i, "Описание" + i);
-            manager.addTask(task);
+            manager.add(task);
         }
 
         List<Task> historyTask = manager.getHistory();
-        if (historyTask.size() > 10) {
-            throw new AssertionError("История содержит больше 10 элементов: " + historyTask.size());
-        }
+        assertEquals(10, historyTask.size(), "История должна содержать не более 10 элементов");
     }
 }
