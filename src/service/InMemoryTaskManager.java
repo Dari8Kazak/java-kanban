@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private static int id;
+    public static int id;
 
     @Override
     public List<Task> getAllTasks() {
@@ -30,21 +30,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override
     public int addTask(Task task) {
         if (task != null) {
-            if (tasks.containsKey(task.getId())) {
-                return -1;
-            } else {
                 task.setId(generateNewId());
                 tasks.put(task.getId(), task);
                 return task.getId();
             }
-        }
-
         System.out.println("Задача не добавлена, так как она равна null.");
         return -1;
     }
@@ -203,26 +200,26 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         int isNew = 0;
-        int isIn_Progress = 0;
         int isDone = 0;
 
         List<Integer> subTasksId = epic.getEpicSubTasks();
         for (Integer subTaskId : subTasksId) {
             if (subTasks.get(subTaskId).getStatus() == TaskStatus.NEW) {
                 isNew++;
-            } else if (subTasks.get(subTaskId).getStatus() == TaskStatus.IN_PROGRESS) {
-                isIn_Progress++;
-            } else if (subTasks.get(subTaskId).getStatus() == TaskStatus.DONE) {
+            } else {
+                subTasks.get(subTaskId);
+            }
+            if (subTasks.get(subTaskId).getStatus() == TaskStatus.DONE) {
                 isDone++;
             }
         }
 
         if (isNew == subTasksId.size()) {
             epic.setStatus(TaskStatus.NEW);
-        } else if (isIn_Progress == subTasksId.size()) {
-            epic.setStatus(TaskStatus.IN_PROGRESS);
-        } else {
+        } else if (isDone == subTasksId.size()) {
             epic.setStatus(TaskStatus.DONE);
+        } else {
+            epic.setStatus(TaskStatus.IN_PROGRESS);
         }
     }
 

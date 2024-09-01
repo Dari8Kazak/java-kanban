@@ -82,19 +82,26 @@ class TaskManagerTest {
         Task task1 = new Task("Задача 1", "Description task 1");
         int existingId = taskManager.addTask(task1);
 
-        Task task2 = new Task("Задача 2", "Description task 2");
-        task2.setId(existingId);
+        assertEquals(existingId, task1.getId(), "ID должен совпадать с присвоенным ID задачи 1");
 
-        int result = taskManager.addTask(task2);
-        assertEquals(-1, result, "Ожидался результат -1, так как задача с таким ID уже существует");
+        Task task2 = new Task("Задача 2", "Description task 2");
+        taskManager.addTask(task2);
+
+        assertNotEquals(task2.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");
 
         Task task3 = new Task("Задача 3", "Описание задачи 3");
-        int newTask3Id = taskManager.addTask(task3);
+        task3.setId(existingId);
 
-        assertNotNull(taskManager.getTaskById(newTask3Id), "Задача 3 должна быть добавлена и найдена по ID");
+        assertEquals(task3.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");
+
+        Task task4 = new Task("Задача 4", "Описание задачи 4");
+        int newTask4Id = taskManager.addTask(task4);
+
+        assertNotNull(taskManager.getTaskById(newTask4Id), "Задача 4 должна быть добавлена и найдена по ID");
     }
 
-    @Test     // Тест 6: что задача сохранена и возвращается корректный объект.
+    @Test
+        // Тест 6: что задача сохранена и возвращается корректный объект.
     void addNewTask() {
         Task task = new Task("Test addNewTask", "Test addNewTask Описание", TaskStatus.NEW);
         int taskId = taskManager.addTask(task);
@@ -112,7 +119,8 @@ class TaskManagerTest {
         Assertions.assertEquals(TaskStatus.NEW, savedTask.getStatus(), "Статус задачи не совпадает!");
     }
 
-    @Test     // Тест 7: Проверка, что эпик сохранен и возвращается правильный объект.
+    @Test
+        // Тест 7: Проверка, что эпик сохранен и возвращается правильный объект.
     void addNewEpic() {
         Epic epic = new Epic("Test Epic", "Test Epic Описание");
         int epicId = taskManager.addEpic(epic);
@@ -131,7 +139,8 @@ class TaskManagerTest {
         Assertions.assertEquals(epic, epics.getFirst(), "Эпики не совпадают.");
     }
 
-    @Test    // Тест 8: Проверка, что подзадача сохранена и возвращается корректный объект.
+    @Test
+        // Тест 8: Проверка, что подзадача сохранена и возвращается корректный объект.
     void addNewSubTask() {
         Epic epic = new Epic("Test Epic", "Test Epic описание");
         taskManager.addEpic(epic);
@@ -148,7 +157,8 @@ class TaskManagerTest {
         Assertions.assertEquals(subTask, subTasks.getFirst(), "Подзадачи не совпадают.");
     }
 
-    @Test     // Тест 9: Проверка, что обновленная задача сохранена и совпадает с новой версией.
+    @Test
+        // Тест 9: Проверка, что обновленная задача сохранена и совпадает с новой версией.
     void updateTask() {
         Task task = new Task("Test задачи", "Test описание задачи", TaskStatus.NEW);
         int taskId = taskManager.addTask(task);
@@ -162,7 +172,8 @@ class TaskManagerTest {
         Assertions.assertEquals(updatedTask, savedTask, "Задачи не совпадают после обновления.");
     }
 
-    @Test     // Тест 10: Задача, удалена и в хранилище ее нет.
+    @Test
+        // Тест 10: Задача, удалена и в хранилище ее нет.
     void deleteTaskById() {
         Task task = new Task("Удаление задачи", "Описание", TaskStatus.NEW);
         int taskId = taskManager.addTask(task);
