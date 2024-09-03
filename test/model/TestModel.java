@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static service.InMemoryTaskManager.generateNewId;
+
 
 class TestModel {
 
@@ -30,7 +30,6 @@ class TestModel {
     @Test    // Тест 3: Проверка, что объект Epic нельзя добавить в самого себя в виде подзадачи
     public void testEpicCannotBeAssignedAsSubtask() {
         Epic epic = new Epic("Epic", "Epic description");
-        epic.setId(generateNewId());
         new SubTask("Subtask", "Subtask description", epic.getId());
 
         assertThrows(IllegalArgumentException.class, () -> epic.addSubTaskId(epic.getId()), "Epic не может быть добавлен как его собственная подзадача");

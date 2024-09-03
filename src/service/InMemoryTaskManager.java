@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    public static int id;
+    private int id;
 
     @Override
     public List<Task> getAllTasks() {
@@ -38,10 +38,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int addTask(Task task) {
         if (task != null) {
-                task.setId(generateNewId());
-                tasks.put(task.getId(), task);
-                return task.getId();
-            }
+            task.setId(generateNewId());
+            tasks.put(task.getId(), task);
+            return task.getId();
+        }
         System.out.println("Задача не добавлена, так как она равна null.");
         return -1;
     }
@@ -73,6 +73,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int epicId) {
+        Epic epic = epics.get(id);
+        historyManager.add(epic);
         return epics.get(epicId);
     }
 
@@ -142,6 +144,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask getSubTaskById(int subTaskId) {
+        SubTask subTask = subTasks.get(id);
+        historyManager.add(subTask);
         return subTasks.get(subTaskId);
     }
 
@@ -186,7 +190,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public static int generateNewId() {
+    private int generateNewId() {
         return id++;
     }
 
@@ -206,8 +210,6 @@ public class InMemoryTaskManager implements TaskManager {
         for (Integer subTaskId : subTasksId) {
             if (subTasks.get(subTaskId).getStatus() == TaskStatus.NEW) {
                 isNew++;
-            } else {
-                subTasks.get(subTaskId);
             }
             if (subTasks.get(subTaskId).getStatus() == TaskStatus.DONE) {
                 isDone++;
