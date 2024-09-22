@@ -69,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpicById(int Id) {
+    public Epic getEpicById(int id) {
         historyManager.add(epics.get(id));
         return epics.get(id);
 
@@ -116,12 +116,12 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("подзадачи не получены");
             return new ArrayList<>();
         }
-        List<SubTask> AllSubTasksEpic = new ArrayList<>();
+        List<SubTask> allSubTasksEpic = new ArrayList<>();
         Epic tmpEpic = epics.get(epicId.getId());
         for (Integer subTaskId : tmpEpic.getEpicSubTasks()) {
-            AllSubTasksEpic.add(subTasks.get(subTaskId));
+            allSubTasksEpic.add(subTasks.get(subTaskId));
         }
-        return AllSubTasksEpic;
+        return allSubTasksEpic;
     }
 
     @Override
