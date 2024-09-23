@@ -2,8 +2,9 @@ package service;
 
 import model.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     final HashMap<Integer, Node<Task>> mapHistoryTask;
@@ -25,8 +26,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public LinkedList<Task> getHistory() {
-        return getAllTasksFromHistory();
+    public ArrayList<Task> getHistory() {
+        return (ArrayList<Task>) getAllTasksFromHistory();
     }
 
     private void linkLastObject(Task task) {
@@ -62,10 +63,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             tail = node.getPrev();
         }
+        if (node.getPrev() == null && node.getNext() == null) {
+            head = null;
+            tail = null;
+
+        }
     }
 
-    private LinkedList<model.Task> getAllTasksFromHistory() {
-        LinkedList<model.Task> tasks = new LinkedList<>();
+    private List<Task> getAllTasksFromHistory() {
+        List<model.Task> tasks = new ArrayList<>();
         Node<Task> current = head;
         while (current != null) {
             tasks.add(current.getElement());

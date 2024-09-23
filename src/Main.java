@@ -34,6 +34,7 @@ public class Main {
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
+
     }
 
     private static TaskManager getTaskManager() {

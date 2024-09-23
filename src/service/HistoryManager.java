@@ -2,7 +2,7 @@ package service;
 
 import model.Task;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public interface HistoryManager {
 
@@ -10,5 +10,7 @@ public interface HistoryManager {
 
     void remove(int id);
 
-    LinkedList<Task> getHistory();
+    ArrayList<Task> getHistory();
+
+
 }

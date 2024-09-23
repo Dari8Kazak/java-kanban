@@ -5,7 +5,7 @@ import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ class HistoryManagerTest {
         manager.add(task1);
         manager.add(task2);
 
-        LinkedList<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
 
         assertEquals(2, history.size());
         assertTrue(history.contains(task1));
@@ -43,8 +43,7 @@ class HistoryManagerTest {
         manager.add(task1);
         manager.add(task2);
         manager.remove(1);
-
-        LinkedList<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
 
         assertEquals(1, history.size());
         assertFalse(history.contains(task1));
@@ -59,7 +58,7 @@ class HistoryManagerTest {
         manager.add(task1);
         manager.remove(2);
 
-        LinkedList<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
         assertEquals(1, history.size());
         assertTrue(history.contains(task1));
     }
@@ -80,7 +79,7 @@ class HistoryManagerTest {
         manager.add(task3);
         manager.add(task2);
 
-        LinkedList<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
 
         assertEquals(4, history.size());
         assertTrue(history.contains(task1));
@@ -100,7 +99,7 @@ class HistoryManagerTest {
         manager.remove(1);
         manager.remove(2);
 
-        LinkedList<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
 
         assertEquals(0, history.size());
     }
