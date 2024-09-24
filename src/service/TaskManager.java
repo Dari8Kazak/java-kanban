@@ -10,7 +10,7 @@ public interface TaskManager {
 
     List<Task> getAllTasks();
 
-    void deleteAllTasks();
+    void removeAllTasks();
 
     Task getTaskById(int taskId);
 
@@ -18,11 +18,11 @@ public interface TaskManager {
 
     void updateTask(Task task);
 
-    void deleteTaskById(int taskId);
+    void removeTaskById(int taskId);
 
     List<Epic> getAllEpics();
 
-    void deleteAllEpics();
+    void removeAllEpics();
 
     Epic getEpicById(int epicId);
 
@@ -30,21 +30,21 @@ public interface TaskManager {
 
     void updateEpic(Epic epic);
 
-    void deleteEpicById(int epicId);
+    void removeEpicById(int epicId);
 
     List<SubTask> getAllEpicSubTasks(Epic epicId);
 
     List<SubTask> getAllSubTasks();
 
-    void deleteAllSubTasks();
+    void removeAllSubTasks();
 
     SubTask getSubTaskById(int subTaskId);
 
-    int addSubTask(SubTask subTask);
+    void addSubTask(SubTask subTask);
 
     void updateSubTask(SubTask updSubTask);
 
-    void deleteSubTaskById(int subTaskId);
+    void removeSubTaskById(int subTaskId);
 
     List<Task> getHistory();
 }

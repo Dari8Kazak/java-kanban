@@ -1,53 +1,106 @@
 package service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import model.Task;
-import model.Epic;
-import model.SubTask;
-import java.util.List;
 
-public class HistoryManagerTest {
-    private HistoryManager manager;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class HistoryManagerTest {
+
+    private InMemoryHistoryManager manager;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         manager = new InMemoryHistoryManager();
     }
 
     @Test
-    public void testHistory() {
-
-        Task task1 = new Task("Пробежка", "Легкий бег");
-        Task task2 = new Task("Упражнения", "ОФП");
-        Epic epic1 = new Epic("Полумарафон", "21 км");
-        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", epic1.getId());
+        //добавление 2 задач и проверка размера истории и наличия задач
+    void testAddTask() {
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
+        Task task2 = new Task("Task 2", "Description 2", TaskStatus.NEW, 2);
 
         manager.add(task1);
         manager.add(task2);
-        manager.add(epic1);
-        manager.add(subTask1);
 
-        List<Task> history = manager.getHistory();
+        ArrayList<Task> history = manager.getHistory();
 
-        assertEquals(4, history.size(), "История должна содержать 4 задачи");
-
-        assertTrue(history.contains(task1), "История должна содержать задачу Пробежка");
-        assertTrue(history.contains(task2), "История должна содержать задачу Упражнения");
-        assertTrue(history.contains(epic1), "История должна содержать эпик Полумарафон");
-        assertTrue(history.contains(subTask1), "История должна содержать подзадачу Подготовка");
+        assertEquals(2, history.size());
+        assertTrue(history.contains(task1));
+        assertTrue(history.contains(task2));
     }
 
     @Test
-    void testHistoryContainsNoMoreThanTenElements() {
-        for (int i = 1; i <= 15; i++) {
-            Task task = new Task("Задача " + i, "Описание" + i);
-            manager.add(task);
-        }
+        //проверка удаления задач
+    void testRemoveTask() {
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
+        Task task2 = new Task("Task 2", "Description 2", TaskStatus.NEW, 2);
 
-        List<Task> historyTask = manager.getHistory();
-        assertEquals(10, historyTask.size(), "История должна содержать не более 10 элементов");
+        manager.add(task1);
+        manager.add(task2);
+        manager.remove(1);
+        ArrayList<Task> history = manager.getHistory();
+
+        assertEquals(1, history.size());
+        assertFalse(history.contains(task1));
+        assertTrue(history.contains(task2));
+    }
+
+    @Test
+        //удаление несуществующей задачи
+    void testRemoveNonExistentTask() {
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
+
+        manager.add(task1);
+        manager.remove(2);
+
+        ArrayList<Task> history = manager.getHistory();
+        assertEquals(1, history.size());
+        assertTrue(history.contains(task1));
+    }
+
+    @Test
+        //добавление дубликата задачи
+    void testAddingDuplicateTaskUpdatesHistory() {
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
+        Task task2 = new Task("Task 2", "Description 2", TaskStatus.NEW, 2);
+        Task task3 = new Task("Task 3", "Description 3", TaskStatus.NEW, 3);
+        Task task4 = new Task("Task 4", "Description 4", TaskStatus.NEW, 4);
+
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task1);
+        manager.add(task4);
+        manager.add(task2);
+        manager.add(task3);
+        manager.add(task2);
+
+        ArrayList<Task> history = manager.getHistory();
+
+        assertEquals(4, history.size());
+        assertTrue(history.contains(task1));
+        assertTrue(history.contains(task2));
+        assertTrue(history.contains(task3));
+        assertTrue(history.contains(task4));
+    }
+
+    @Test
+        //очистка истории
+    void testClearHistory() {
+        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
+        Task task2 = new Task("Task 2", "Description 2", TaskStatus.NEW, 2);
+
+        manager.add(task1);
+        manager.add(task2);
+        manager.remove(1);
+        manager.remove(2);
+
+        ArrayList<Task> history = manager.getHistory();
+
+        assertEquals(0, history.size());
     }
 }
