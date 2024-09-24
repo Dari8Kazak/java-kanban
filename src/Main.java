@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = getTaskManager();
-
+        System.out.println("добавили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
@@ -24,17 +24,22 @@ public class Main {
         manager.updateSubTask(new SubTask("Экипировка", "Обновление 1", TaskStatus.IN_PROGRESS, 3, 6));
         manager.updateSubTask(new SubTask("Подведение", "Обновление 1", TaskStatus.DONE, 4, 7));
 
+        System.out.println("обновили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
 
         manager.removeTaskById(1);
-        manager.removeEpicById(3);
 
+        manager.getEpicById(3);
+        manager.getEpicById(4);
+
+        manager.removeAllEpics();
+
+        System.out.println("удалили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
-
     }
 
     private static TaskManager getTaskManager() {

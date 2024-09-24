@@ -178,7 +178,6 @@ class TaskManagerTest {
         Task task = new Task("Удаление задачи", "Описание");
         int taskId = taskManager.addTask(task);
         assertEquals(1, taskManager.getAllTasks().size());
-
         taskManager.removeTaskById(taskId);
         assertEquals(0, taskManager.getAllTasks().size());
     }
