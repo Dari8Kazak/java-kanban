@@ -120,12 +120,12 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("подзадачи не получены");
             return new ArrayList<>();
         }
-        List<SubTask> AllSubTasksEpic = new ArrayList<>();
+        List<SubTask> allSubTasksEpic = new ArrayList<>();
         Epic tmpEpic = epics.get(epicId.getId());
         for (Integer subTaskId : tmpEpic.getEpicSubTasks()) {
-            AllSubTasksEpic.add(subTasks.get(subTaskId));
+            allSubTasksEpic.add(subTasks.get(subTaskId));
         }
-        return AllSubTasksEpic;
+        return allSubTasksEpic;
     }
 
     @Override
