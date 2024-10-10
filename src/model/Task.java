@@ -1,5 +1,7 @@
 package model;
 
+import enums.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -74,11 +76,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Задача{" +
-                "название задачи='" + name + '\'' +
-                ", описание='" + description + '\'' +
-                ", идентификатор=" + id +
-                ", статус=" + status +
-                '}';
+        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 }
