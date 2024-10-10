@@ -1,5 +1,7 @@
 package model;
 
+import enums.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -58,7 +60,6 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,14 +72,12 @@ public class Task {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
-
     @Override
     public String toString() {
-        return "Задача{" +
-                "название задачи='" + name + '\'' +
-                ", описание='" + description + '\'' +
-                ", идентификатор=" + id +
-                ", статус=" + status +
-                '}';
+        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 }
