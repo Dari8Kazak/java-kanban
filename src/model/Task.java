@@ -60,6 +60,7 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,6 +73,7 @@ public class Task {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
     @Override
     public String toString() {
         return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
