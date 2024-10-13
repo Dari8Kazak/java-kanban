@@ -25,7 +25,6 @@ public class FileBackedTaskManagerTest {
 
             String header = br.readLine();
             assertEquals("id,type,name,status,description,epic", header);
-            // Проверяем, что после заголовка нет других строк
             assertNull(br.readLine());
         }
     }
