@@ -19,12 +19,13 @@ public class FileBackedTaskManagerTest {
         File tempFile = File.createTempFile("tempTaskManager", ".csv");
         tempFile.deleteOnExit();
         FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
-
         manager.save();
 
         try (BufferedReader br = new BufferedReader(new FileReader(tempFile))) {
+
             String header = br.readLine();
             assertEquals("id,type,name,status,description,epic", header);
+            // Проверяем, что после заголовка нет других строк
             assertNull(br.readLine());
         }
     }
@@ -75,5 +76,4 @@ public class FileBackedTaskManagerTest {
         assertEquals(1, manager.getAllEpics().size());
         assertEquals(1, manager.getAllSubTasks().size());
     }
-
 }

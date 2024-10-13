@@ -47,17 +47,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         TaskStatus taskStatus = TaskStatus.valueOf(contents[3]);
         String taskDescription = contents[4];
 
-        switch (taskType) {
-            case TASK:
-                return new Task(taskName, taskDescription, taskStatus, taskId);
-            case EPIC:
-                return new Epic(taskId, taskName, taskDescription, taskStatus);
-            case SUBTASK:
-                int epicId = Integer.parseInt(contents[5]);
-                return new SubTask(epicId, taskId, taskName, taskDescription, taskStatus);
-            default:
-                throw new IllegalArgumentException("Неверный тип задачи: " + taskType);
+        if (taskType == TaskType.SUBTASK) {
+            int epicId = Integer.parseInt(contents[5]);
+            return new SubTask(epicId, taskId, taskName, taskDescription, taskStatus);
         }
+        return switch (taskType) {
+            case TASK -> new Task(taskName, taskDescription, taskStatus, taskId);
+            case EPIC -> new Epic(taskId, taskName, taskDescription, taskStatus);
+            default -> throw new IllegalArgumentException("Неверный тип задачи: " + taskType);
+        };
     }
 
     @Override
@@ -99,5 +97,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка сохранения задач в файл: " + e.getMessage(), e);
         }
+    }
+
+    public String getPathToFile() {
+        return pathToFile;
     }
 }
