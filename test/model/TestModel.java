@@ -3,8 +3,10 @@ package model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TestModel {
 
@@ -30,8 +32,10 @@ class TestModel {
     @Test    // Тест 3: Проверка, что объект Epic нельзя добавить в самого себя в виде подзадачи
     public void testEpicCannotBeAssignedAsSubtask() {
         Epic epic = new Epic("Epic", "Epic description");
-        new SubTask("Subtask", "Subtask description", epic.getId());
+        int epicId = epic.getId();  // Получаем ID эпика для дальнейшего использования
 
-        assertThrows(IllegalArgumentException.class, () -> epic.addSubTaskId(epic.getId()), "Epic не может быть добавлен как его собственная подзадача");
+        assertThrows(IllegalArgumentException.class, () -> {
+            epic.addSubTaskId(epicId, Duration.ZERO, LocalDateTime.now()); // Передаем необходимые параметры
+        }, "Epic не может быть добавлен как его собственная подзадача");
     }
 }

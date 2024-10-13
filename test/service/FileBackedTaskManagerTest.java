@@ -25,7 +25,6 @@ public class FileBackedTaskManagerTest {
 
             String header = br.readLine();
             assertEquals("id,type,name,status,description,epic", header);
-            // Проверяем, что после заголовка нет других строк
             assertNull(br.readLine());
         }
     }
@@ -36,13 +35,14 @@ public class FileBackedTaskManagerTest {
         tempFile.deleteOnExit();
         FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
 
-        Task task1 = new Task("Task 1", "Description 1", TaskStatus.NEW, 1);
-        Epic epic1 = new Epic(1, "Epic 1", "Epic Description 1", TaskStatus.NEW);
-        SubTask subTask1 = new SubTask(1, 2, "SubTask 1", "SubTask Description 1", TaskStatus.NEW);
-
-        manager.addTask(task1);
-        manager.addEpic(epic1);
-        manager.addSubTask(subTask1);
+        Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
+        // При создании Epic правильные аргументы: id, name, description, status
+        Epic epic1 = new Epic("Epic 1", "Epic Description 1");
+        // Подправляем конструкцию SubTask так, чтобы использовать корректные параметры
+        SubTask subTask1 = new SubTask(1, "SubTask 1", TaskStatus.NEW, "SubTask Description 1", 2);
+        manager.createTask(task1);
+        manager.createEpic(epic1);
+        manager.createSubTask(subTask1);
 
         manager.save();
 

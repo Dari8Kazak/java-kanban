@@ -2,6 +2,9 @@ package model;
 
 import enums.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
     private int epicId;
 
@@ -10,15 +13,28 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    public SubTask(String name, String description, TaskStatus status, int epicId, int id) {
-        super(name, description, status);
-        this.id = id;
+    public SubTask(int id, String name, TaskStatus status, String description, int epicId) {
+        super(id, name, status, description);
         this.epicId = epicId;
     }
 
-    public SubTask(int epicId, int id, String name, String description, TaskStatus status) {
-        super(name, description, status);
-        this.id = id;
+    public SubTask(SubTask subtask) {
+        super(subtask.name, subtask.description);
+        this.epicId = subtask.epicId;
+    }
+
+    public SubTask(int id, String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime startTime, int epicId) {
+        super(id, name, description, taskStatus, duration, startTime);
+        this.epicId = epicId;
+    }
+
+    public SubTask(String name, String description, int epicId, Duration duration, LocalDateTime startTime) {
+        super(name, description, TaskStatus.NEW, duration, startTime);
+        this.epicId = epicId;
+    }
+
+    public SubTask(Task task, int epicId) {
+        super(task);
         this.epicId = epicId;
     }
 
@@ -34,14 +50,13 @@ public class SubTask extends Task {
     }
 
     @Override
-    public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());//    @Override
-
-    }
-
-    @Override
     public TaskType getType() {
         return TaskType.SUBTASK;
     }
-}
 
+    @Override
+    public String toString() {
+        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+
+    }
+}

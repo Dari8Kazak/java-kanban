@@ -10,11 +10,21 @@ public interface TaskManager {
 
     List<Task> getAllTasks();
 
+    int createTask(Task task);
+
+    int createEpic(Epic epic);
+
+    int createSubTask(SubTask subTask);
+
+    boolean isSubtaskTimeIntersect(SubTask newSubtask);
+
+    boolean isTaskTimeIntersect(Task newTask);
+
+    boolean isTimeOverlap(Task task1, Task task2);
+
     void deleteAllTasks();
 
     Task getTaskById(int taskId);
-
-    int addTask(Task task);
 
     void updateTask(Task task);
 
@@ -25,8 +35,6 @@ public interface TaskManager {
     void deleteAllEpics();
 
     Epic getEpicById(int epicId);
-
-    int addEpic(Epic epic);
 
     void updateEpic(Epic epic);
 
@@ -39,8 +47,6 @@ public interface TaskManager {
     void deleteAllSubTasks();
 
     SubTask getSubTaskById(int subTaskId);
-
-    int addSubTask(SubTask subTask);
 
     void updateSubTask(SubTask updSubTask);
 
