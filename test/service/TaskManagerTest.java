@@ -1,12 +1,12 @@
 package service;
 
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import model.Task;
-import model.Epic;
-import model.SubTask;
-import model.TaskStatus;
 
 import java.util.List;
 
@@ -35,11 +35,11 @@ class TaskManagerTest {
         Task task = new Task("Task1", "Description 1");
         Epic epic = new Epic("Epic", "Epic description");
 
-        manager.addEpic(epic);
+        manager.createEpic(epic);
         SubTask subTask = new SubTask("Subtask", "Subtask description", epic.getId());
 
-        manager.addTask(task);
-        manager.addSubTask(subTask);
+        manager.createTask(task);
+        manager.createSubTask(subTask);
 
         assertNotNull(manager.getTaskById(task.getId()), "Находим task по ID");
         assertNotNull(manager.getEpicById(epic.getId()), "Находим epic по ID");
@@ -53,8 +53,8 @@ class TaskManagerTest {
         Task task1 = new Task("Task1", "Description 1");
         Task task2 = new Task("Task1", "Description 2");
 
-        manager.addTask(task1);
-        manager.addTask(task2);
+        manager.createTask(task1);
+        manager.createTask(task2);
 
         List<Task> tasks = manager.getAllTasks();
 
@@ -70,7 +70,7 @@ class TaskManagerTest {
         String originalName = originalTask.getName();
         String originalDescription = originalTask.getDescription();
 
-        taskManager.addTask(originalTask);
+        taskManager.createTask(originalTask);
 
         Assertions.assertEquals(originalName, originalTask.getName(), "Имя задачи изменилось!");
         Assertions.assertEquals(originalDescription, originalTask.getDescription(), "Описание задачи изменилось!");
@@ -80,12 +80,13 @@ class TaskManagerTest {
     @Test  // Тест 5: проверка, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     public void testUniqueIdConflict() {
         Task task1 = new Task("Задача 1", "Description task 1");
-        int existingId = taskManager.addTask(task1);
+
+        int existingId = taskManager.getTaskById(task1.getId()).getId();
 
         assertEquals(existingId, task1.getId(), "ID должен совпадать с присвоенным ID задачи 1");
 
         Task task2 = new Task("Задача 2", "Description task 2");
-        taskManager.addTask(task2);
+        taskManager.createTask(task2);
 
         assertNotEquals(task2.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");
 
@@ -95,7 +96,7 @@ class TaskManagerTest {
         assertEquals(task3.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");
 
         Task task4 = new Task("Задача 4", "Описание задачи 4");
-        int newTask4Id = taskManager.addTask(task4);
+        int newTask4Id = taskManager.getTaskById(task4.getId()).getId();
 
         assertNotNull(taskManager.getTaskById(newTask4Id), "Задача 4 должна быть добавлена и найдена по ID");
     }
@@ -103,8 +104,8 @@ class TaskManagerTest {
     @Test
         // Тест 6: что задача сохранена и возвращается корректный объект.
     void addNewTask() {
-        Task task = new Task("Test addNewTask", "Test addNewTask Описание", TaskStatus.NEW);
-        int taskId = taskManager.addTask(task);
+        Task task = new Task(1, "Test addNewTask", TaskStatus.NEW, "Test addNewTask Описание");
+        int taskId = taskManager.createTask(task);
 
         Task savedTask = taskManager.getTaskById(taskId);
 
@@ -123,7 +124,7 @@ class TaskManagerTest {
         // Тест 7: Проверка, что эпик сохранен и возвращается правильный объект.
     void addNewEpic() {
         Epic epic = new Epic("Test Epic", "Test Epic Описание");
-        int epicId = taskManager.addEpic(epic);
+        int epicId = taskManager.createEpic(epic);
 
         assertTrue(epicId >= 0, "Неверный ID эпика.");
 
@@ -143,10 +144,10 @@ class TaskManagerTest {
         // Тест 8: Проверка, что подзадача сохранена и возвращается корректный объект.
     void addNewSubTask() {
         Epic epic = new Epic("Test Epic", "Test Epic описание");
-        taskManager.addEpic(epic);
+        taskManager.createEpic(epic);
 
         SubTask subTask = new SubTask("Test подзадачи", "Test описание подзадачи", epic.getId());
-        int subTaskId = taskManager.addSubTask(subTask);
+        int subTaskId = taskManager.createSubTask(subTask);
 
         taskManager.getSubTaskById(subTaskId);
 
@@ -160,10 +161,10 @@ class TaskManagerTest {
     @Test
         // Тест 9: Проверка, что обновленная задача сохранена и совпадает с новой версией.
     void updateTask() {
-        Task task = new Task("Test задачи", "Test описание задачи", TaskStatus.NEW);
-        int taskId = taskManager.addTask(task);
+        Task task = new Task("Test задачи", "Test описание задачи");
+        int taskId = taskManager.createTask(task);
 
-        Task updatedTask = new Task("Обновление задачи", "Обновление описания", TaskStatus.IN_PROGRESS, taskId);
+        Task updatedTask = new Task(taskId, "Обновление описания", TaskStatus.IN_PROGRESS, "Обновление задачи");
         taskManager.updateTask(updatedTask);
 
         Task savedTask = taskManager.getTaskById(taskId);
@@ -175,8 +176,8 @@ class TaskManagerTest {
     @Test
         // Тест 10: Задача, удалена и в хранилище ее нет.
     void deleteTaskById() {
-        Task task = new Task("Удаление задачи", "Описание", TaskStatus.NEW);
-        int taskId = taskManager.addTask(task);
+        Task task = new Task("Удаление задачи", "Описание");
+        int taskId = taskManager.createTask(task);
 
         taskManager.deleteTaskById(taskId);
         Task deletedTask = taskManager.getTaskById(taskId);
