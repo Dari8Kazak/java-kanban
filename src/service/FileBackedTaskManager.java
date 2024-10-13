@@ -12,7 +12,7 @@ import java.io.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    private final String pathToFile = System.getProperty("C:\\Users\\Daria\\project") + File.separator + "register.csv";
+    private final String pathToFile = System.getProperty("user.home") + File.separator + "register.csv";
 
     public FileBackedTaskManager(File existFile) {
         this.file = existFile;
