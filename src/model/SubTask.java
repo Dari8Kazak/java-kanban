@@ -17,6 +17,7 @@ public class SubTask extends Task {
     public int getEpicId() {
         return epicId;
     }
+
     public void setEpicId(int epicId) {
         if (epicId == this.id) {
             throw new IllegalArgumentException("Subtask не может быть добавлен как его собственный Epic.");
