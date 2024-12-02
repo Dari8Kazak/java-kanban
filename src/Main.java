@@ -2,34 +2,41 @@ import model.Epic;
 import model.SubTask;
 import model.Task;
 import model.TaskStatus;
-import service.TaskManager;
 import service.InMemoryTaskManager;
+import service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
 
         TaskManager manager = getTaskManager();
-
+        System.out.println("добавили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
 
-        manager.updateTask(new Task("Пробежка", "Легкий бег с нагрузкой", TaskStatus.IN_PROGRESS, 0));
-        manager.updateTask(new Task("Упражнения", "интервалы", TaskStatus.IN_PROGRESS, 1));
-        manager.updateEpic(new Epic("Полумарафон", "мед. справка", 2));
-        manager.updateEpic(new Epic("Марафон", "регистрация", 3));
-        manager.updateSubTask(new SubTask("Подготовка", "Обновление 1", TaskStatus.DONE, 2, 4));
-        manager.updateSubTask(new SubTask("Экипировка", "Обновление 1", TaskStatus.IN_PROGRESS, 2, 5));
-        manager.updateSubTask(new SubTask("Подведение", "Обновление 1", TaskStatus.DONE, 3, 6));
+        manager.updateTask(new Task("Пробежка", "Легкий бег с нагрузкой", TaskStatus.IN_PROGRESS, 1));
+        manager.updateTask(new Task("Упражнения", "интервалы", TaskStatus.IN_PROGRESS, 2));
+        manager.updateEpic(new Epic("Полумарафон", "мед. справка", 3));
+        manager.updateEpic(new Epic("Марафон", "регистрация", 4));
 
+        manager.updateSubTask(new SubTask("Подготовка", "Обновление 1", TaskStatus.DONE, 3, 5));
+        manager.updateSubTask(new SubTask("Экипировка", "Обновление 1", TaskStatus.IN_PROGRESS, 3, 6));
+        manager.updateSubTask(new SubTask("Подведение", "Обновление 1", TaskStatus.DONE, 4, 7));
+
+        System.out.println("обновили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
 
-        manager.deleteTaskById(1);
-        manager.deleteEpicById(3);
+        manager.removeTaskById(1);
 
+        manager.getEpicById(3);
+        manager.getEpicById(4);
+
+        manager.removeAllEpics();
+
+        System.out.println("удалили");
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
@@ -42,9 +49,9 @@ public class Main {
         Task task2 = new Task("Упражнения", "ОФП");
         Epic epic1 = new Epic("Полумарафон", "21 км");
         Epic epic2 = new Epic("Марафон", "42 км");
-        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", 2);
-        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", 2);
-        SubTask subTask3 = new SubTask("Подведение", "Диета", 3);
+        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", 3);
+        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", 3);
+        SubTask subTask3 = new SubTask("Подведение", "Диета", 4);
 
         manager.addTask(task1);
         manager.addTask(task2);

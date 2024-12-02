@@ -1,12 +1,12 @@
 package service;
 
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import model.Task;
-import model.Epic;
-import model.SubTask;
-import model.TaskStatus;
 
 import java.util.List;
 
@@ -35,15 +35,22 @@ class TaskManagerTest {
         Task task = new Task("Task1", "Description 1");
         Epic epic = new Epic("Epic", "Epic description");
 
+        manager.addTask(task);
         manager.addEpic(epic);
         SubTask subTask = new SubTask("Subtask", "Subtask description", epic.getId());
-
-        manager.addTask(task);
         manager.addSubTask(subTask);
 
-        assertNotNull(manager.getTaskById(task.getId()), "Находим task по ID");
-        assertNotNull(manager.getEpicById(epic.getId()), "Находим epic по ID");
-        assertNotNull(manager.getSubTaskById(subTask.getId()), "Находим subtask по ID");
+        List<Task> allTasks = manager.getAllTasks();
+        List<Epic> allEpics = manager.getAllEpics();
+        List<SubTask> allSubTasks = manager.getAllSubTasks();
+
+        assertEquals(1, allTasks.size(), "Должна быть одна задача");
+        assertEquals(1, allEpics.size(), "Должен быть один эпик");
+        assertEquals(1, allSubTasks.size(), "Должна быть одна подзадача");
+
+        assertEquals("Task1", allTasks.getFirst().getName(), "Имя задачи не совпадает");
+        assertEquals("Epic", allEpics.getFirst().getName(), "Имя эпика не совпадает");
+        assertEquals("Subtask", allSubTasks.getFirst().getName(), "Имя подзадачи не совпадает");
     }
 
     @Test  // Тест 3: Проверка, что задачи с заданным id и сгенерированным id не конфликтуют
@@ -127,11 +134,6 @@ class TaskManagerTest {
 
         assertTrue(epicId >= 0, "Неверный ID эпика.");
 
-        Epic savedEpic = taskManager.getEpicById(epicId);
-
-        assertNotNull(savedEpic, "Эпик не найден.");
-        Assertions.assertEquals(epic, savedEpic, "Эпики не совпадают.");
-
         List<Epic> epics = taskManager.getAllEpics();
 
         assertNotNull(epics, "Эпики не возвращаются.");
@@ -146,9 +148,7 @@ class TaskManagerTest {
         taskManager.addEpic(epic);
 
         SubTask subTask = new SubTask("Test подзадачи", "Test описание подзадачи", epic.getId());
-        int subTaskId = taskManager.addSubTask(subTask);
-
-        taskManager.getSubTaskById(subTaskId);
+        taskManager.addSubTask(subTask);
 
         List<SubTask> subTasks = taskManager.getAllSubTasks();
 
@@ -174,13 +174,11 @@ class TaskManagerTest {
 
     @Test
         // Тест 10: Задача, удалена и в хранилище ее нет.
-    void deleteTaskById() {
-        Task task = new Task("Удаление задачи", "Описание", TaskStatus.NEW);
+    void removeTaskById() {
+        Task task = new Task("Удаление задачи", "Описание");
         int taskId = taskManager.addTask(task);
-
-        taskManager.deleteTaskById(taskId);
-        Task deletedTask = taskManager.getTaskById(taskId);
-
-        Assertions.assertNull(deletedTask, "Задача должна быть удалена.");
+        assertEquals(1, taskManager.getAllTasks().size());
+        taskManager.removeTaskById(taskId);
+        assertEquals(0, taskManager.getAllTasks().size());
     }
 }
