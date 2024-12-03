@@ -1,7 +1,5 @@
 package model;
 
-import enums.TaskType;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 
