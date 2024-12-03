@@ -1,19 +1,17 @@
 package service;
 
-import model.Epic;
-import model.SubTask;
 import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class HistoryManagerTest {
-    private HistoryManager manager;
+class HistoryManagerTest {
 
+    private InMemoryHistoryManager manager;
 
     @BeforeEach
     void setUp() {
