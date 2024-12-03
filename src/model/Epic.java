@@ -1,7 +1,5 @@
 package model;
 
-import enums.TaskType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,6 @@ public class Epic extends Task {
     }
 
     public Epic(String name, String description, int id) {
-        super(name, description, TaskStatus.NEW, id);
-    }
-
-    public Epic(int id, String name, String description, TaskStatus taskStatus) {
         super(name, description, TaskStatus.NEW, id);
     }
 
@@ -42,11 +36,11 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
-    }
-
-    @Override
-    public TaskType getType() {
-        return TaskType.EPIC;
+        return "Эпик{" +
+                "подзадачи эпика=" + epicSubTasksId +
+                ", название задачи='" + name +
+                '\'' + ", описание='" + description +
+                '\'' + ", идентификатор=" + id +
+                ", статус=" + status + '}';
     }
 }
