@@ -1,6 +1,6 @@
 package service;
 
-import exceptions.ManagerLoadException;
+import exceptions.FileException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -59,7 +59,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void testLoadMultipleTasks() throws IOException, ManagerLoadException {
+    public void testLoadMultipleTasks() throws IOException, FileException {
         File tempFile = File.createTempFile("tempTaskManager", ".csv");
         tempFile.deleteOnExit();
 

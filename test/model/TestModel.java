@@ -1,11 +1,8 @@
 package model;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TestModel {
@@ -16,7 +13,7 @@ class TestModel {
         Task task2 = new Task("Task2", "Description 2");
         task1.setId(1);
         task2.setId(1);
-        Assertions.assertEquals(task1, task2, "Task с одинаковым ID должны быть равны");
+        assertEquals(task1, task2, "Task с одинаковым ID должны быть равны");
     }
 
     @Test    // Тест 2: Проверка, что наследники класса Task равны друг другу, если равен их id
@@ -26,16 +23,24 @@ class TestModel {
         SubTask subTask2 = new SubTask("Subtask2", "Subtask description", epic.getId());
         subTask1.setId(1);
         subTask2.setId(1);
-        Assertions.assertEquals(subTask1, subTask2, "SubTask с одинаковым ID должны быть равны");
+        assertEquals(subTask1, subTask2, "SubTask с одинаковым ID должны быть равны");
     }
 
-    @Test    // Тест 3: Проверка, что объект Epic нельзя добавить в самого себя в виде подзадачи
-    public void testEpicCannotBeAssignedAsSubtask() {
-        Epic epic = new Epic("Epic", "Epic description");
-        int epicId = epic.getId();  // Получаем ID эпика для дальнейшего использования
+    @Test
+    void testEpicCannotBeAddedAsSubTaskToItself() {
+        // Создаем объект Epic
+        Epic epic = new Epic("Epic Task", "Description of the epic");
+        int epicId = epic.getId(); // Получаем ID эпика
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            epic.addSubTaskId(epicId, Duration.ZERO, LocalDateTime.now()); // Передаем необходимые параметры
-        }, "Epic не может быть добавлен как его собственная подзадача");
+        // Создаем подзадачу с тем же ID, что и у эпика
+        SubTask subTask = new SubTask("SubTask", "Description of the subtask", epicId);
+
+        // Проверяем на выброс исключения
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            subTask.setEpicId(epicId);
+        });
+
+        assertEquals("Subtask не может быть добавлен как его собственный Epic.", thrown.getMessage());
     }
 }
+

@@ -1,6 +1,6 @@
 package service;
 
-import exceptions.ManagerLoadException;
+import exceptions.FileException;
 import model.*;
 
 import java.io.*;
@@ -21,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         checkFile(existFile);
     }
 
-    public static TaskManager loadFromFile(File file) throws ManagerLoadException {
+    public static TaskManager loadFromFile(File file) throws FileException {
         TaskManager manager = new FileBackedTaskManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             br.readLine();
@@ -37,7 +37,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            throw new ManagerLoadException("Ошибка при загрузке данных из файла: " + e.getMessage());
+            throw new FileException("Ошибка при загрузке данных из файла: " + e.getMessage());
         }
         return manager;
     }
@@ -125,8 +125,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println("Файл не обнаружен");
                 } else
                     System.out.println("Файла существует");
-            } catch (ManagerLoadException | IOException e) {
-                throw new ManagerLoadException("Не удалось создать директорию или файл не обнаружен");
+            } catch (FileException | IOException e) {
+                throw new FileException("Не удалось создать директорию или файл не обнаружен");
             }
         }
         load();
