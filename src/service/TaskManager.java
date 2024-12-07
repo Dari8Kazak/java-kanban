@@ -14,7 +14,7 @@ public interface TaskManager {
 
     int createEpic(Epic epic);
 
-    int createSubTask(SubTask subTask);
+    boolean createSubTask(SubTask subTask);
 
     boolean isSubtaskTimeIntersect(SubTask newSubtask);
 

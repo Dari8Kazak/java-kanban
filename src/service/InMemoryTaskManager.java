@@ -78,8 +78,9 @@ public class InMemoryTaskManager implements TaskManager {
         if (task != null) {
             task.setId(generateNewId());
             tasks.put(task.getId(), task);
+        } else {
+            System.out.println("Задача не добавлена, так как она равна null.");
         }
-        System.out.println("Задача не добавлена, так как она равна null.");
         return 0;
     }
 
@@ -97,22 +98,39 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int createSubTask(SubTask subTask) {
-        if (subTask == null) {
-            System.out.println("подзадача не добавлена");
-            return 0;
+    public boolean createSubTask(SubTask subtask) {
+        if (!isTaskTimeIntersect(subtask)) {
+            if (!(subtask instanceof SubTask) || epics.get(subtask.getEpicId()) == null) {
+                return false;
+            }
+            Epic epic = epics.get(subtask.getEpicId());
+            subtask.setId(generateNewId());
+            subtask.setEpicId(epic.getId());
+            epic.addSubTaskId(subtask);
+            subTasks.put(subtask.getId(), subtask);
+            epic.updateStatus();
+            epics.put(epic.getId(), epic);
+            return true;
         }
-        Epic epic = epics.get(subTask.getEpicId());
-        if (epic != null) {
-            subTask.setId(generateNewId());
-            epic.addSubTaskId(subTask);
-
-            subTasks.put(subTask.getId(), subTask);
-
-            updateEpicStatus(epic);
-        }
-        return 0;
+        return false;
     }
+//    @Override
+//    public int createSubTask(SubTask subTask) {
+//        if (subTask == null) {
+//            System.out.println("подзадача не добавлена");
+//            return 0;
+//        }
+//        Epic epic = epics.get(subTask.getEpicId());
+//        if (epic != null) {
+//            subTask.setId(generateNewId());
+//            epic.addSubTaskId(subTask);
+//
+//            subTasks.put(subTask.getId(), subTask);
+//
+//            updateEpicStatus(epic);
+//        }
+//        return 0;
+//    }
 
     @Override
     public void updateEpic(Epic epic) {
