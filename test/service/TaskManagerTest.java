@@ -32,14 +32,26 @@ class TaskManagerTest {
     public void testInMemoryTaskManagerAddsDifferentTaskTypes() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
 
-        Task task = new Task("Task1", "Description 1");
-        Epic epic = new Epic("Epic", "Epic description");
-
-        manager.createEpic(epic);
-        SubTask subTask = new SubTask("Subtask", "Subtask description", epic.getId());
+        Task task = new Task("Task", "Task Description");
+        Epic epic = new Epic("Epic", "Epic Description");
+        SubTask subTask = new SubTask("SubTask", "SubTask Description", epic.getId());
 
         manager.createTask(task);
+        manager.createEpic(epic);
+        subTask.setEpicId(epic.getId());
         manager.createSubTask(subTask);
+
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTasks());
+
+        // Проверка, что SubTask принадлежит Epic
+        assertEquals(epic.getId(), subTask.getEpicId());
+
+        // Проверка, что задачи добавлены в менеджер
+        System.out.println(task.getId());
+        System.out.println(epic.getId());
+        System.out.println(subTask.getId());
 
         assertNotNull(manager.getTaskById(task.getId()), "Находим task по ID");
         assertNotNull(manager.getEpicById(epic.getId()), "Находим epic по ID");
@@ -80,6 +92,7 @@ class TaskManagerTest {
     @Test  // Тест 5: проверка, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     public void testUniqueIdConflict() {
         Task task1 = new Task("Задача 1", "Description task 1");
+        taskManager.createTask(task1);
 
         int existingId = taskManager.getTaskById(task1.getId()).getId();
 
@@ -142,14 +155,12 @@ class TaskManagerTest {
 
     @Test
         // Тест 8: Проверка, что подзадача сохранена и возвращается корректный объект.
-    void addNewSubTask() {
+    void createNewSubTask() {
         Epic epic = new Epic("Test Epic", "Test Epic описание");
         taskManager.createEpic(epic);
 
-        SubTask subTask = new SubTask(subTask.getId(), "Test подзадачи", TaskStatus.NEW, "Test описание подзадачи", epic.getId());
-        int subTaskId = taskManager.createSubTask(subTask);
-
-        taskManager.getSubTaskById(subTaskId);
+        SubTask subTask = new SubTask("Test подзадачи", "Test описание подзадачи", epic.getId());
+        taskManager.createSubTask(subTask);
 
         List<SubTask> subTasks = taskManager.getAllSubTasks();
 
@@ -174,14 +185,18 @@ class TaskManagerTest {
     }
 
     @Test
-        // Тест 10: Задача, удалена и в хранилище ее нет.
+// Тест 10: Задача, удалена и в хранилище ее нет.
     void deleteTaskById() {
         Task task = new Task("Удаление задачи", "Описание");
         int taskId = taskManager.createTask(task);
 
-        taskManager.deleteTaskById(taskId);
-        Task deletedTask = taskManager.getTaskById(taskId);
+        System.out.println(task);
 
-        Assertions.assertNull(deletedTask, "Задача должна быть удалена.");
+        taskManager.deleteTaskById(taskId);
+        System.out.println(taskManager.getAllTasks());
+
+        // Проверяем, что задача успешно удалена
+        assertFalse(taskManager.getAllTasks().contains(task), "Задача должна быть удалена.");
     }
+
 }

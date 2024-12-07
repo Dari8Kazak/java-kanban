@@ -1,10 +1,10 @@
 package service;
 
-import exceptions.FileException;
+import exceptions.ManagerLoadException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
-import model.TaskStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -13,6 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FileBackedTaskManagerTest {
+
+    @BeforeEach
+    void setUp() {
+        File file = new File("test_data.csv");
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
+    }
 
     @Test
     public void testSaveEmptyFile() throws IOException {
@@ -35,11 +41,11 @@ public class FileBackedTaskManagerTest {
         tempFile.deleteOnExit();
         FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
 
-        Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
-        // При создании Epic правильные аргументы: id, name, description, status
+        Task task1 = new Task("Task 1", "Description 1");
         Epic epic1 = new Epic("Epic 1", "Epic Description 1");
-        // Подправляем конструкцию SubTask так, чтобы использовать корректные параметры
-        SubTask subTask1 = new SubTask(1, "SubTask 1", TaskStatus.NEW, "SubTask Description 1", 2);
+        SubTask subTask1 = new SubTask("SubTask 1", "SubTask Description 1", epic1.getId());
+
+
         manager.createTask(task1);
         manager.createEpic(epic1);
         manager.createSubTask(subTask1);
@@ -59,7 +65,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void testLoadMultipleTasks() throws IOException, FileException {
+    public void testLoadMultipleTasks() throws IOException, ManagerLoadException {
         File tempFile = File.createTempFile("tempTaskManager", ".csv");
         tempFile.deleteOnExit();
 

@@ -8,13 +8,45 @@ import java.util.List;
 
 public interface TaskManager {
 
-    List<Task> getAllTasks();
-
     int createTask(Task task);
 
     int createEpic(Epic epic);
 
-    int createSubTask(SubTask subTask);
+    SubTask createSubTask(SubTask subTask);
+
+    void updateTask(Task task);
+
+    void updateEpic(Epic epic);
+
+    void updateSubTask(SubTask updSubTask);
+
+    void deleteAllTasks();
+
+    void deleteAllEpics();
+
+    void deleteAllSubTasks();
+
+    void deleteTaskById(int taskId);
+
+    void deleteEpicById(int epicId);
+
+    void deleteSubTaskById(int subTaskId);
+
+    Task getTaskById(int taskId);
+
+    Epic getEpicById(int epicId);
+
+    SubTask getSubTaskById(int subTaskId);
+
+    List<Task> getHistory();
+
+    List<Task> getAllTasks();
+
+    List<Epic> getAllEpics();
+
+    List<SubTask> getAllSubTasks();
+
+    List<SubTask> getAllEpicSubTasks(Epic epicId);
 
     boolean isSubtaskTimeIntersect(SubTask newSubtask);
 
@@ -22,35 +54,4 @@ public interface TaskManager {
 
     boolean isTimeOverlap(Task task1, Task task2);
 
-    void deleteAllTasks();
-
-    Task getTaskById(int taskId);
-
-    void updateTask(Task task);
-
-    void deleteTaskById(int taskId);
-
-    List<Epic> getAllEpics();
-
-    void deleteAllEpics();
-
-    Epic getEpicById(int epicId);
-
-    void updateEpic(Epic epic);
-
-    void deleteEpicById(int epicId);
-
-    List<SubTask> getAllEpicSubTasks(Epic epicId);
-
-    List<SubTask> getAllSubTasks();
-
-    void deleteAllSubTasks();
-
-    SubTask getSubTaskById(int subTaskId);
-
-    void updateSubTask(SubTask updSubTask);
-
-    void deleteSubTaskById(int subTaskId);
-
-    List<Task> getHistory();
 }

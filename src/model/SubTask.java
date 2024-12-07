@@ -48,6 +48,11 @@ public class SubTask extends Task {
     }
 
     @Override
+    public int getId() {
+        return super.getId();
+    }
+
+    @Override
     public TaskType getType() {
         return TaskType.SUBTASK;
     }
