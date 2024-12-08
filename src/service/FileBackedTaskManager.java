@@ -48,16 +48,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private static Task fromString(String taskFromFile) {
         String[] contents = taskFromFile.split(",");
-        int taskId = parseInt(contents[0]);
-        TaskType taskType = TaskType.valueOf(contents[1]);
-        String taskName = contents[2];
-        TaskStatus taskStatus = TaskStatus.valueOf(contents[3]);
-        String taskDescription = contents[4];
-        Duration duration = Duration.ofMinutes(parseInt(contents[5]));
-        LocalDateTime startTime = LocalDateTime.parse(contents[6]);
+        int taskId = parseInt(contents[1]);
+        TaskType taskType = TaskType.valueOf(contents[2]);
+        String taskName = contents[3];
+        TaskStatus taskStatus = TaskStatus.valueOf(contents[4]);
+        String taskDescription = contents[5];
+        Duration duration = Duration.ofMinutes(parseInt(contents[6]));
+        LocalDateTime startTime = LocalDateTime.parse(contents[7]);
 
         if (taskType == TaskType.SUBTASK) {
-            int epicId = parseInt(contents[7]);
+            int epicId = parseInt(contents[8]);
             return new SubTask(taskId, taskName, taskDescription, taskStatus, duration, startTime, epicId);
         }
         return switch (taskType) {
@@ -154,15 +154,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while ((line = reader.readLine()) != null) {
                 if (line.contains("ID")) continue;
                 String[] parts = line.split(",");
-                int id = parseInt(parts[1]);
-                String type = parts[2];
-                String name = parts[3];
-                String status = parts[4];
-                String description = parts[5];
+//                if (parts.length < 6) {
+//                    // обрабатываем ошибку
+//                    continue;
+//                }
+
+                int id = Integer.parseInt(parts[0]);
+                String type = parts[1];
+                String name = parts[2];
+                String status = parts[3];
+                String description = parts[4];
+
                 LocalDateTime startTime = null;
                 Duration duration = null;
-                if (parts.length > 6) startTime = !parts[5].isEmpty() ? LocalDateTime.parse(parts[5], formatter) : null;
-                if (parts.length > 7)
+
+                if (parts.length > 5)
+                    startTime = !parts[5].isEmpty() ? LocalDateTime.parse(parts[5], formatter) : null;
+                if (parts.length > 6)
                     duration = !parts[6].isEmpty() ? Duration.ofMinutes(Long.parseLong(parts[6])) : null;
 
                 if (type.equals(TaskType.TASK.name())) {

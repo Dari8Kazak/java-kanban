@@ -16,7 +16,7 @@ public class FileBackedTaskManagerTest {
 
     @BeforeEach
     void setUp() {
-        File file = new File("test_data.csv");
+        File file = new File("tempTaskManager.csv");
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
     }
 
