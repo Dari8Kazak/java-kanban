@@ -48,21 +48,38 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private static Task fromString(String taskFromFile) {
         String[] contents = taskFromFile.split(",");
-        int taskId = parseInt(contents[1]);
-        TaskType taskType = TaskType.valueOf(contents[2]);
-        String taskName = contents[3];
-        TaskStatus taskStatus = TaskStatus.valueOf(contents[4]);
-        String taskDescription = contents[5];
-        Duration duration = Duration.ofMinutes(parseInt(contents[6]));
-        LocalDateTime startTime = LocalDateTime.parse(contents[7]);
+
+        if (contents.length < 6) {
+            throw new IllegalArgumentException("Недостаточное количество полей в строке: " + taskFromFile);
+        }
+
+        int taskId = parseInt(contents[0]);
+        TaskType taskType = TaskType.valueOf(contents[1]);
+        String taskName = contents[2];
+        TaskStatus taskStatus = TaskStatus.valueOf(contents[3]);
+        String taskDescription = contents[4];
+
+        Duration duration = null;
+        LocalDateTime startTime = null;
+
+        if (contents.length > 5) {
+            duration = Duration.ofMinutes(parseInt(contents[5]));
+        }
+        if (contents.length > 6) {
+            startTime = LocalDateTime.parse(contents[6], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        }
 
         if (taskType == TaskType.SUBTASK) {
-            int epicId = parseInt(contents[8]);
+            if (contents.length < 8) {
+                throw new IllegalArgumentException("Недостаточно полей для субзадачи: " + taskFromFile);
+            }
+            int epicId = parseInt(contents[7]);
             return new SubTask(taskId, taskName, taskDescription, taskStatus, duration, startTime, epicId);
         }
+
         return switch (taskType) {
             case TASK -> new Task(taskId, taskName, taskDescription, taskStatus, duration, startTime);
-            case EPIC -> new Epic(taskName, taskDescription, taskStatus, duration, startTime);
+            case EPIC -> new Epic(taskId, taskName, taskDescription, taskStatus, duration, startTime);
             default -> throw new IllegalArgumentException("Неверный тип задачи: " + taskType);
         };
     }
@@ -83,7 +100,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return epic.getId();
     }
 
-
     @Override
     public void updateTask(Task task) {
         super.updateTask(task);
@@ -102,7 +118,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.getPrioritizedTasks().add(subTask);
         save();
     }
-
 
     @Override
     public void deleteTaskById(int id) {
@@ -147,19 +162,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         load();
     }
 
-    // Обновляем метод загрузки с учетом новых полей
     private void load() {
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.contains("ID")) continue;
                 String[] parts = line.split(",");
-//                if (parts.length < 6) {
-//                    // обрабатываем ошибку
-//                    continue;
-//                }
 
-                int id = Integer.parseInt(parts[0]);
+                int id = parseInt(parts[0]);
                 String type = parts[1];
                 String name = parts[2];
                 String status = parts[3];
@@ -238,7 +248,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String.valueOf(epic.getDuration().toMinutes()),
                 epic.getStartTime().format(formatter));
     }
-
     private String subTaskToString(SubTask subTask) {
         return String.join(",", String.valueOf(subTask.getId()),
                 subTask.getType().toString(),
