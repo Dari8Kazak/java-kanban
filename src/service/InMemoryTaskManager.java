@@ -61,6 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int createTask(Task task) {
+        prioritizedTasks.add(task);
         if (task != null) {
             task.setId(generateNewId());
             tasks.put(task.getId(), task);
@@ -93,7 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask createSubTask(SubTask subtask) {
         if (!isTaskTimeIntersect(subtask)) {
-            if (!(subtask instanceof SubTask) || epics.get(subtask.getEpicId()) == null) {
+            if (subtask == null || epics.get(subtask.getEpicId()) == null) {
                 return null;
             }
             Epic epic = epics.get(subtask.getEpicId());
@@ -133,6 +134,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
+        prioritizedTasks.remove(task); // Удаляем старую задачу
+        prioritizedTasks.add(task); // Добавляем обновленную задачу
         if (task != null && tasks.containsKey(task.getId()) && task.getClass() == Task.class) {
             tasks.put(task.getId(), task);
         } else {
@@ -242,7 +245,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean isSubtaskTimeIntersect(SubTask newSubtask) {
-        return false;
+        return isTaskOverlap(newSubtask);
     }
 
     @Override
@@ -251,13 +254,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public boolean isTaskOverlap(Task newTask) {
-        if (newTask.getStartTime() == null ||
-                newTask.getDuration() == null)
+        if (newTask.getStartTime() == null || newTask.getDuration() == null)
             return false;
 
         for (Task existingTask : getPrioritizedTasks()) {
-            if ((existingTask.getStartTime() != null || existingTask.getDuration() != null) &&
-                    (newTask.getStartTime().isBefore(existingTask.getEndTime()) && newTask.getEndTime().isAfter(existingTask.getStartTime()))) {
+            if ((existingTask.getStartTime() != null && existingTask.getDuration() != null) &&
+                    (newTask.getStartTime().isBefore(existingTask.getEndTime()) && newTask.getEndTime().isAfter(existingTask.getStartTime())) ||
+                    (newTask.getStartTime().equals(existingTask.getStartTime()))) {
                 return true;
             }
         }
@@ -265,9 +268,10 @@ public class InMemoryTaskManager implements TaskManager {
         return false; // Если пересечений не найдено, возвращаем false
     }
 
+
     @Override
     public boolean isTimeOverlap(Task task1, Task task2) {
-        return false;
+        return false; // Реализуйте логику проверки пересечения времени между task1 и task2
     }
 
     private int generateNewId() {
@@ -281,8 +285,13 @@ public class InMemoryTaskManager implements TaskManager {
 
         // Сортировка задач по startTime
         Collections.sort(allTasks, Comparator.comparing(Task::getStartTime, Comparator.naturalOrder()));
-        return prioritizedTasks;
+
+        prioritizedTasks.clear(); // Очищаем старый список
+        prioritizedTasks.addAll(allTasks); // Заполняем новый список отсортированными задачами
+
+        return prioritizedTasks; // Возвращаем TreeSet с отсортированными задачами
     }
+
 
     @Override
     public List<SubTask> getAllEpicSubTasks(Epic epicId) {

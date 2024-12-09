@@ -1,7 +1,7 @@
 package service;
 
-import exceptions.ManagerLoadException;
-import exceptions.ManagerSaveException;
+
+import exceptions.FileException;
 import model.*;
 
 import java.io.*;
@@ -22,66 +22,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public FileBackedTaskManager(File existFile) {
         checkFile(existFile);
-    }
-
-    public static TaskManager loadFromFile(File file) throws ManagerLoadException {
-        TaskManager manager = new FileBackedTaskManager(file);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            br.readLine();
-
-            String line;
-            while ((line = br.readLine()) != null && !line.isEmpty()) {
-                Task task = fromString(line);
-                TaskType taskType = task.getType();
-                switch (taskType) {
-                    case TASK -> manager.createTask(task);
-                    case EPIC -> manager.createEpic((Epic) task);
-                    case SUBTASK -> manager.createSubTask((SubTask) task);
-                }
-            }
-        } catch (IOException e) {
-            throw new ManagerLoadException("Ошибка при загрузке данных из файла: " + e.getMessage());
-        }
-        return manager;
-    }
-
-    private static Task fromString(String taskFromFile) {
-        String[] contents = taskFromFile.split(",");
-
-        if (contents.length < 6) {
-            throw new IllegalArgumentException("Недостаточное количество полей в строке: " + taskFromFile);
-        }
-
-        int taskId = parseInt(contents[0]);
-        TaskType taskType = TaskType.valueOf(contents[1]);
-        String taskName = contents[2];
-        TaskStatus taskStatus = TaskStatus.valueOf(contents[3]);
-        String taskDescription = contents[4];
-
-        Duration duration = null;
-        LocalDateTime startTime = null;
-
-        if (contents.length > 5) {
-            duration = Duration.ofMinutes(parseInt(contents[5]));
-        }
-        if (contents.length > 6) {
-            startTime = LocalDateTime.parse(contents[6], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        }
-
-        if (taskType == TaskType.SUBTASK) {
-            if (contents.length < 8) {
-                throw new IllegalArgumentException("Недостаточно полей для субзадачи: " + taskFromFile);
-            }
-            int epicId = parseInt(contents[7]);
-            return new SubTask(taskId, taskName, taskDescription, taskStatus, duration, startTime, epicId);
-        }
-
-        return switch (taskType) {
-            case TASK -> new Task(taskId, taskName, taskDescription, taskStatus, duration, startTime);
-            case EPIC -> new Epic(taskId, taskName, taskDescription, taskStatus, duration, startTime);
-            default -> throw new IllegalArgumentException("Неверный тип задачи: " + taskType);
-        };
     }
 
     @Override
@@ -155,14 +95,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     System.out.println("Файл не обнаружен");
                 } else
                     System.out.println("Файл существует");
-            } catch (ManagerLoadException | IOException e) {
-                throw new ManagerLoadException("Не удалось создать директорию или файл не обнаружен");
+            } catch (FileException | IOException e) {
+                throw new FileException("Не удалось создать директорию или файл не обнаружен");
             }
         }
         load();
     }
 
     private void load() {
+
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -225,7 +166,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка при сохранении данных в файл: " + e.getMessage());
+            throw new FileException("Ошибка при сохранении данных в файл: " + e.getMessage());
         }
     }
 

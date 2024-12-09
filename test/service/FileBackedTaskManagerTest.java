@@ -1,18 +1,7 @@
 package service;
-//
-//import exceptions.ManagerLoadException;
-//import model.Epic;
-//import model.SubTask;
-//import model.Task;
-//import model.TaskStatus;
-//import org.junit.jupiter.api.Test;
-//
-//import java.io.*;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNull;
-//
-//public class FileBackedTaskManagerTest {
+
+
+public class FileBackedTaskManagerTest {
 //
 //    @Test
 //    public void testSaveEmptyFile() throws IOException {
@@ -57,7 +46,7 @@ package service;
 //    }
 //
 //    @Test
-//    public void testLoadMultipleTasks() throws IOException, ManagerLoadException {
+//    public void testLoadMultipleTasks() throws IOException, FileException {
 //        File tempFile = File.createTempFile("tempTaskManager", ".csv");
 //        tempFile.deleteOnExit();
 //
@@ -67,10 +56,10 @@ package service;
 //            fw.write("2,EPIC,Epic2,DONE,Description epic2,\n");
 //            fw.write("3,SUBTASK,SubTask3,NEW,Description subTask3,1\n");
 //        }
-//        TaskManager manager = FileBackedTaskManager.loadFromFile(tempFile);
+//        TaskManager manager = FileBackedTaskManager.load(tempFile);
 //
 //        assertEquals(1, manager.getAllTasks().size());
 //        assertEquals(1, manager.getAllEpics().size());
 //        assertEquals(1, manager.getAllSubTasks().size());
 //    }
-//}
+}
