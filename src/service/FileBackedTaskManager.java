@@ -248,6 +248,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String.valueOf(epic.getDuration().toMinutes()),
                 epic.getStartTime().format(formatter));
     }
+
     private String subTaskToString(SubTask subTask) {
         return String.join(",", String.valueOf(subTask.getId()),
                 subTask.getType().toString(),
