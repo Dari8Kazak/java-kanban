@@ -53,13 +53,13 @@ public class SubTask extends Task {
     }
 
     @Override
-    public TaskType getType() {
+    public TaskType getTaskType() {
         return TaskType.SUBTASK;
     }
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+        return String.format("%d,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription());
 
     }
 }

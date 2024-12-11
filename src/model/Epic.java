@@ -109,21 +109,21 @@ public class Epic extends Task {
     }
 
     public Duration getDuration() {
-        return duration;
+        return super.getDuration();
     }
 
     public LocalDateTime getStartTime() {
-        return startTime;
+        return super.getStartTime();
     }
 
     @Override
-    public TaskType getType() {
+    public TaskType getTaskType() {
         return TaskType.EPIC;
     }
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription(), getSubtasks());
+        return String.format("%d,%s,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription(), getSubtasks());
     }
 
     @Override
@@ -131,6 +131,6 @@ public class Epic extends Task {
         return super.getId();
     }
 
-    public void addSubTaskId(int epicId, Duration zero, LocalDateTime now) {
-    }
+//    public void addSubTaskId(int epicId, Duration zero, LocalDateTime now) {
+//    }
 }

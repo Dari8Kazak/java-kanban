@@ -2,6 +2,7 @@ package model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -11,6 +12,7 @@ public class Task {
     protected String description;
     protected Duration duration;
     protected LocalDateTime startTime;
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Task(String name, String description) {
         this.name = name;
@@ -38,6 +40,7 @@ public class Task {
         this.name = task.name;
         this.description = task.description;
         this.status = task.status;
+
     }
 
     public Task(int id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
@@ -59,7 +62,7 @@ public class Task {
 
     public LocalDateTime getEndTime() {
         if (startTime != null && duration != null) {
-            return startTime.plus(duration);  // расчет времени завершения
+            return startTime.plus(duration);
         }
         return null;
     }
@@ -112,7 +115,7 @@ public class Task {
         this.description = description;
     }
 
-    public TaskType getType() {
+    public TaskType getTaskType() {
         return TaskType.TASK;
     }
 
@@ -131,7 +134,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+        return String.format("%d,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription());
     }
 
     public void deleteSubTaskById(int subTaskId) {

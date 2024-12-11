@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,7 +65,12 @@ class TaskManagerTest {
         InMemoryTaskManager manager = new InMemoryTaskManager();
 
         Task task1 = new Task("Task1", "Description 1");
+        task1.setDuration(Duration.ofMinutes(30));
+        task1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+
         Task task2 = new Task("Task1", "Description 2");
+        task2.setDuration(Duration.ofMinutes(30));
+        task2.setStartTime(LocalDateTime.of(2024, 12, 13, 10, 0));
 
         manager.createTask(task1);
         manager.createTask(task2);
@@ -92,13 +99,16 @@ class TaskManagerTest {
     @Test  // Тест 5: проверка, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     public void testUniqueIdConflict() {
         Task task1 = new Task("Задача 1", "Description task 1");
+        task1.setDuration(Duration.ofMinutes(30));
+        task1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
         taskManager.createTask(task1);
-
         int existingId = taskManager.getTaskById(task1.getId()).getId();
 
         assertEquals(existingId, task1.getId(), "ID должен совпадать с присвоенным ID задачи 1");
 
-        Task task2 = new Task("Задача 2", "Description task 2");
+        Task task2 = new Task(2, "Задача 2", "Description task 2");
+        task2.setDuration(Duration.ofMinutes(30));
+        task2.setStartTime(LocalDateTime.of(2024, 12, 3, 10, 0));
         taskManager.createTask(task2);
 
         assertNotEquals(task2.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");

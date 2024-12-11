@@ -12,7 +12,7 @@ public interface TaskManager {
 
     int createEpic(Epic epic);
 
-    SubTask createSubTask(SubTask subTask);
+    int createSubTask(SubTask subTask);
 
     void updateTask(Task task);
 
@@ -52,6 +52,5 @@ public interface TaskManager {
 
     boolean isTaskTimeIntersect(Task newTask);
 
-    boolean isTimeOverlap(Task task1, Task task2);
 
 }
