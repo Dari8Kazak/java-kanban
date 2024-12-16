@@ -3,13 +3,14 @@ package service;
 import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HistoryManagerTest {
+class InMemoryHistoryManagerTest {
 
     private InMemoryHistoryManager manager;
 
@@ -18,8 +19,8 @@ class HistoryManagerTest {
         manager = new InMemoryHistoryManager();
     }
 
+    @DisplayName("Тест 1: Добавление 2 задач и проверка размера истории и наличия задач")
     @Test
-        //добавление 2 задач и проверка размера истории и наличия задач
     void testAddTask() {
         Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
         Task task2 = new Task(2, "Task 2", TaskStatus.NEW, "Description 2");
@@ -34,8 +35,8 @@ class HistoryManagerTest {
         assertTrue(history.contains(task2));
     }
 
+    @DisplayName("Тест 2: Проверка удаления задач")
     @Test
-        //проверка удаления задач
     void testRemoveTask() {
         Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
         Task task2 = new Task(2, "Task 2", TaskStatus.NEW, "Description 2");
@@ -50,8 +51,8 @@ class HistoryManagerTest {
         assertTrue(history.contains(task2));
     }
 
+    @DisplayName("Тест 3: Удаление несуществующей задачи")
     @Test
-        //удаление несуществующей задачи
     void testRemoveNonExistentTask() {
         Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
 
@@ -63,8 +64,8 @@ class HistoryManagerTest {
         assertTrue(history.contains(task1));
     }
 
+    @DisplayName("Тест 4: Добавление дубликата задачи")
     @Test
-        //добавление дубликата задачи
     void testAddingDuplicateTaskUpdatesHistory() {
         Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
         Task task2 = new Task(2, "Task 2", TaskStatus.NEW, "Description 2");
@@ -88,8 +89,8 @@ class HistoryManagerTest {
         assertTrue(history.contains(task4));
     }
 
+    @DisplayName("Тест 5: Очистка истории")
     @Test
-        //очистка истории
     void testClearHistory() {
         Task task1 = new Task(1, "Task 1", TaskStatus.NEW, "Description 1");
         Task task2 = new Task(2, "Task 2", TaskStatus.NEW, "Description 2");

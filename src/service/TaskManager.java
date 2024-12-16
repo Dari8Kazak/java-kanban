@@ -52,5 +52,5 @@ public interface TaskManager {
 
     boolean isTaskTimeIntersect(Task newTask);
 
-
+    void save();
 }

@@ -134,10 +134,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription());
-    }
-
-    public void deleteSubTaskById(int subTaskId) {
-
+        return String.format("%d,%s,%s,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription(), getDuration(), getStartTime());
     }
 }

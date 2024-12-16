@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TestModel {
 
-    @Test    // Тест 1: Проверка, что экземпляры класса Task равны друг другу, если равен их id
+    @Test    // Тест 1: Проверка, что экземпляры класса Task равны друг другу, если равен их id.
     public void testTaskEqualityById() {
         Task task1 = new Task("Task1", "Description 1");
         Task task2 = new Task("Task2", "Description 2");
@@ -43,4 +43,3 @@ class TestModel {
         assertEquals("Subtask не может быть добавлен как его собственный Epic.", thrown.getMessage());
     }
 }
-

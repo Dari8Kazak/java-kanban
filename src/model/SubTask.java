@@ -59,7 +59,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription());
+        return String.format("%d,%s,%s,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription(), getDuration(), getStartTime());
 
     }
 }

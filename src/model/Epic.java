@@ -50,7 +50,7 @@ public class Epic extends Task {
         this.subTasks = subtasks;
     }
 
-    public void addSubTaskId(SubTask subTask) {
+    public void createSubTaskId(SubTask subTask) {
         if (subTask == null) {
             throw new IllegalArgumentException("Подзадача не может быть null");
         }
@@ -130,7 +130,4 @@ public class Epic extends Task {
     public int getId() {
         return super.getId();
     }
-
-//    public void addSubTaskId(int epicId, Duration zero, LocalDateTime now) {
-//    }
 }
