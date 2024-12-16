@@ -5,61 +5,90 @@ import model.TaskStatus;
 import service.InMemoryTaskManager;
 import service.TaskManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Main {
 
     public static void main(String[] args) {
-
-        TaskManager manager = getTaskManager();
-        System.out.println("добавили");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
-        System.out.println(manager.getAllSubTasks());
-
-        manager.updateTask(new Task("Пробежка", "Легкий бег с нагрузкой", TaskStatus.IN_PROGRESS, 1));
-        manager.updateTask(new Task("Упражнения", "интервалы", TaskStatus.IN_PROGRESS, 2));
-        manager.updateEpic(new Epic("Полумарафон", "мед. справка", 3));
-        manager.updateEpic(new Epic("Марафон", "регистрация", 4));
-
-        manager.updateSubTask(new SubTask("Подготовка", "Обновление 1", TaskStatus.DONE, 3, 5));
-        manager.updateSubTask(new SubTask("Экипировка", "Обновление 1", TaskStatus.IN_PROGRESS, 3, 6));
-        manager.updateSubTask(new SubTask("Подведение", "Обновление 1", TaskStatus.DONE, 4, 7));
-
-        System.out.println("обновили");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
-        System.out.println(manager.getAllSubTasks());
-
-        manager.removeTaskById(1);
-
-        manager.getEpicById(3);
-        manager.getEpicById(4);
-
-        manager.removeAllEpics();
-
-        System.out.println("удалили");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
-        System.out.println(manager.getAllSubTasks());
-    }
-
-    private static TaskManager getTaskManager() {
+        System.out.println("Создали задачу, Эпик");
         TaskManager manager = new InMemoryTaskManager();
-
+//        1. создание 2 Task
         Task task1 = new Task("Пробежка", "Легкий бег");
-        Task task2 = new Task("Упражнения", "ОФП");
-        Epic epic1 = new Epic("Полумарафон", "21 км");
-        Epic epic2 = new Epic("Марафон", "42 км");
-        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", 3);
-        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", 3);
-        SubTask subTask3 = new SubTask("Подведение", "Диета", 4);
 
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addEpic(epic1);
-        manager.addEpic(epic2);
-        manager.addSubTask(subTask1);
-        manager.addSubTask(subTask2);
-        manager.addSubTask(subTask3);
-        return manager;
+        task1.setDuration(Duration.ofMinutes(30));
+        task1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        manager.createTask(task1);
+
+        Task task2 = new Task("Упражнения", "ОФП");
+        task2.setDuration(Duration.ofMinutes(30));
+        task2.setStartTime(LocalDateTime.of(2024, 12, 2, 10, 0));
+        manager.createTask(task2);
+//        2. создание Epic
+        Epic epic1 = new Epic("Полумарафон", "21 км");
+        epic1.setDuration(Duration.ofMinutes(30));
+        epic1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        manager.createEpic(epic1);
+
+        Epic epic2 = new Epic("Марафон", "42 км");
+        epic2.setDuration(Duration.ofMinutes(30));
+        epic2.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        manager.createEpic(epic2);
+
+//        3. создание SubTask
+        SubTask subTask1 = new SubTask("Подготовка", "Медленный бег", epic1.getId());
+        subTask1.setEpicId(epic1.getId());
+        subTask1.setDuration(Duration.ofMinutes(30));
+        subTask1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        manager.createSubTask(subTask1);
+
+        SubTask subTask2 = new SubTask("Экипировка", "купить кроссовки", epic2.getId());
+        subTask2.setEpicId(epic1.getId());
+        subTask2.setDuration(Duration.ofMinutes(30));
+        subTask2.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        manager.createSubTask(subTask2);
+
+        SubTask subTask3 = new SubTask("Подведение", "Диета", epic1.getId());
+
+        subTask3.setDuration(Duration.ofMinutes(30));
+        subTask3.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
+        subTask3.setEpicId(epic1.getId());
+        manager.createSubTask(subTask3);
+
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTasks());
+
+//        4. обновление Task
+        task1.setStatus(TaskStatus.DONE);
+        task2.setStatus(TaskStatus.IN_PROGRESS);
+
+//        5. обновление Epic
+        epic1.setDescription("мед. справка");
+        epic1.setDescription("заминка");
+
+////        6. обновление SubTask
+        subTask1.setDescription("This new description");
+        subTask2.setStatus(TaskStatus.IN_PROGRESS);
+        subTask3.setName("обновление 1");
+
+        System.out.println("Обновили задачу, Эпик");
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTasks());
+
+
+//        7. удаление Task
+        manager.deleteTaskById(1);
+//        8. удаление Epic
+        manager.deleteEpicById(3);
+        //        8. удаление SubTask
+        manager.deleteSubTaskById(subTask1.getId());
+
+        System.out.println("Удалили задачу, Эпик");
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTasks());
+
     }
 }
