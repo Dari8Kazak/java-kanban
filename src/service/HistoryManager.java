@@ -12,5 +12,4 @@ public interface HistoryManager {
 
     ArrayList<Task> getHistory();
 
-
 }
