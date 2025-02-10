@@ -12,12 +12,12 @@ public class Epic extends Task {
         this.subTasks = new ArrayList<>();
     }
 
-    public Epic(int id, String name, String description) {
+    public Epic(Integer id, String name, String description) {
         super(id, name, description);
         this.subTasks = new ArrayList<>();
     }
 
-    public Epic(int id, String name, TaskStatus status, String description, ArrayList<SubTask> subTasks) {
+    public Epic(Integer id, String name, TaskStatus status, String description, ArrayList<SubTask> subTasks) {
         super(id, name, status, description);
         this.subTasks = subTasks;
     }
@@ -31,7 +31,7 @@ public class Epic extends Task {
         this.subTasks = newSubtasks;
     }
 
-    public Epic(int id, String name, TaskStatus taskStatus, String description, Duration duration, LocalDateTime startTime) {
+    public Epic(Integer id, String name, TaskStatus taskStatus, String description, Duration duration, LocalDateTime startTime) {
         super(id, name, description, taskStatus, duration, startTime);
         this.subTasks = new ArrayList<>();
     }
@@ -41,28 +41,13 @@ public class Epic extends Task {
         this.subTasks = new ArrayList<>();
     }
 
-    public Epic(int id, String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime now) {
+    public Epic(Integer id, String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime now) {
         super(id, name, description, taskStatus, duration, now);
         this.subTasks = new ArrayList<>();
     }
 
     public void setSubtask(ArrayList<SubTask> subtasks) {
         this.subTasks = subtasks;
-    }
-
-    public void createSubTaskId(SubTask subTask) {
-        if (subTask == null) {
-            throw new IllegalArgumentException("Подзадача не может быть null");
-        }
-        if (this.equals(subTask)) {
-            throw new IllegalArgumentException("Эпик не может быть подзадачей самого себя");
-        }
-        if (this.getDuration() == null) {
-            this.setDuration(Duration.ZERO);
-        }
-        Duration subTaskDuration = subTask.getDuration();
-        this.setDuration(this.getDuration().plus(subTaskDuration != null ? subTaskDuration : Duration.ZERO));
-        this.subTasks.add(subTask);
     }
 
     public void updateStatus() {
@@ -127,7 +112,7 @@ public class Epic extends Task {
     }
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return super.getId();
     }
 }

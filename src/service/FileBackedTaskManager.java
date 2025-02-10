@@ -23,19 +23,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createTask(Task task) {
+    public Task createTask(Task task) {
         super.createTask(task);
         super.getPrioritizedTasks().add(task);
         save();
-        return 0;
+        return task;
     }
 
     @Override
-    public int createEpic(Epic epic) {
+    public Epic createEpic(Epic epic) {
         super.createEpic(epic);
         super.getPrioritizedTasks().add(epic);
         save();
-        return epic.getId();
+        return epic;
     }
 
     public static void loadFromFile(File file, FileBackedTaskManager loadedManager) throws FileException {
@@ -80,52 +80,58 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public Task updateTask(Task task) {
         super.updateTask(task);
         save();
+        return task;
     }
 
     @Override
-    public void updateEpic(Epic epic) {
+    public Epic updateEpic(Epic epic) {
         super.updateEpic(epic);
         save();
+        return epic;
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) {
+    public SubTask updateSubTask(SubTask subTask) {
         super.updateSubTask(subTask);
         super.getPrioritizedTasks().add(subTask);
         save();
+        return subTask;
     }
 
     @Override
-    public void deleteTaskById(int id) {
+    public Task deleteTaskById(Integer id) {
         super.deleteTaskById(id);
         save();
+        return null;
     }
 
     @Override
-    public void deleteEpicById(int id) {
+    public Epic deleteEpicById(Integer id) {
         super.deleteEpicById(id);
         save();
+        return null;
     }
 
     @Override
-    public void deleteSubTaskById(int id) {
+    public SubTask deleteSubTaskById(Integer id) {
         SubTask subtask = getSubTaskById(id);
         if (subtask != null) {
             super.getPrioritizedTasks().remove(subtask);
         }
         super.deleteSubTaskById(id);
         save();
+        return null;
     }
 
     @Override
-    public int createSubTask(SubTask subTask) {
+    public SubTask createSubTask(SubTask subTask) {
         super.createSubTask(subTask);
         super.getPrioritizedTasks().add(subTask);
         save();
-        return subTask.getId();
+        return subTask;
     }
 
     public TreeSet<Task> getPrioritizedTasks() {

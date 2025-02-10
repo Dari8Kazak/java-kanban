@@ -24,8 +24,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager = createTaskManager();
     }
 
-    /*** Task*/
-
     @DisplayName("Успешное создание задачи")
     @Test
     void addNewTask_whenTaskIsValid_shouldAddSuccessfully() {
@@ -68,9 +66,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertTrue(taskManager.getHistory().isEmpty());
     }
 
-    /**
-     * Epic
-     */
     @DisplayName("Успешное создание эпика")
     @Test
     void addNewEpic_whenTaskIsValid_shouldAddSuccessfully() {

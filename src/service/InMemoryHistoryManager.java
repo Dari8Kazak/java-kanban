@@ -21,7 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(Integer id) {
         removeHistoryById(id);
     }
 
@@ -45,7 +45,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         mapHistoryTask.put(task.getId(), newNode);
     }
 
-    private void removeHistoryById(int id) {
+    private void removeHistoryById(Integer id) {
         Node<Task> nodeToRemove = mapHistoryTask.remove(id);
         if (nodeToRemove != null) {
             removeNode(nodeToRemove);

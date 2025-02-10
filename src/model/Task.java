@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Task {
     protected String name;
-    protected int id;
+    protected Integer id;
     protected TaskStatus status;
     protected String description;
     protected Duration duration;
@@ -20,14 +20,14 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
-    public Task(int id, String name, String description) {
+    public Task(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = TaskStatus.NEW;
     }
 
-    public Task(int id, String name, TaskStatus status, String description) {
+    public Task(Integer id, String name, TaskStatus status, String description) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -40,10 +40,9 @@ public class Task {
         this.name = task.name;
         this.description = task.description;
         this.status = task.status;
-
     }
 
-    public Task(int id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
+    public Task(Integer id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -53,6 +52,7 @@ public class Task {
     }
 
     public Task(String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime now) {
+        this.id = null;
         this.name = name;
         this.description = description;
         this.status = taskStatus;
@@ -91,11 +91,11 @@ public class Task {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -134,6 +134,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription(), getDuration(), getStartTime());
+        return String.format("%s,%s,%s,%s,%s,%s,%s", getId(), getTaskType(), getName(), getStatus(), getDescription(), getDuration(), getStartTime());
     }
 }
