@@ -2,9 +2,9 @@ package HttpServiceTest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import http_server.HttpTaskServer;
-import http_server.adapters.DurationAdapter;
-import http_server.adapters.LocalDateTimeAdapter;
+import httpServer.HttpTaskServer;
+import httpServer.adapters.DurationAdapter;
+import httpServer.adapters.LocalDateTimeAdapter;
 import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;

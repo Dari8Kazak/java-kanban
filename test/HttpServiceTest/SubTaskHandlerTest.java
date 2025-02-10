@@ -2,8 +2,8 @@ package HttpServiceTest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import http_server.HttpTaskServer;
-import http_server.adapters.SubTaskAdapter;
+import httpServer.HttpTaskServer;
+import httpServer.adapters.SubTaskAdapter;
 import model.Epic;
 import model.SubTask;
 import model.Task;

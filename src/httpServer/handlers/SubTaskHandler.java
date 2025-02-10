@@ -1,9 +1,9 @@
-package http_server.handlers;
+package httpServer.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
-import http_server.adapters.SubTaskAdapter;
+import httpServer.adapters.SubTaskAdapter;
 import model.SubTask;
 import model.Task;
 import service.TaskManager;

@@ -1,10 +1,10 @@
-package http_server.handlers;
+package httpServer.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
-import http_server.adapters.DurationAdapter;
-import http_server.adapters.LocalDateTimeAdapter;
+import httpServer.adapters.DurationAdapter;
+import httpServer.adapters.LocalDateTimeAdapter;
 import model.Task;
 import service.TaskManager;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-public class TaskHandler extends http_server.handlers.BaseHttpHandler {
+public class TaskHandler extends httpServer.handlers.BaseHttpHandler {
 
     protected final TaskManager manager;
     protected final Gson gson = new GsonBuilder()
