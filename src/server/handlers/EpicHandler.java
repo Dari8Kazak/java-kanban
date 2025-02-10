@@ -1,13 +1,13 @@
-package httpServer.handlers;
+package server.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
-import httpServer.adapters.EpicAdapter;
-import httpServer.adapters.SubTaskAdapter;
 import model.Epic;
 import model.SubTask;
 import model.Task;
+import server.adapters.EpicAdapter;
+import server.adapters.SubTaskAdapter;
 import service.TaskManager;
 
 import java.nio.charset.StandardCharsets;

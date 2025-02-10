@@ -3,14 +3,14 @@ package HttpServiceTest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import httpServer.HttpTaskServer;
-import httpServer.adapters.DurationAdapter;
-import httpServer.adapters.LocalDateTimeAdapter;
 import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.HttpTaskServer;
+import server.adapters.DurationAdapter;
+import server.adapters.LocalDateTimeAdapter;
 import service.InMemoryTaskManager;
 import service.TaskManager;
 

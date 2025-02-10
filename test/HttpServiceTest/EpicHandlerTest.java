@@ -3,15 +3,15 @@ package HttpServiceTest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import httpServer.HttpTaskServer;
-import httpServer.adapters.EpicAdapter;
-import httpServer.adapters.SubTaskAdapter;
 import model.Epic;
 import model.SubTask;
 import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.HttpTaskServer;
+import server.adapters.EpicAdapter;
+import server.adapters.SubTaskAdapter;
 import service.InMemoryTaskManager;
 import service.TaskManager;
 
