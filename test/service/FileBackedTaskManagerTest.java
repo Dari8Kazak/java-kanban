@@ -20,6 +20,7 @@ import static service.InMemoryTaskManager.getSubTasks;
 import static service.InMemoryTaskManager.getTasks;
 
 class FileBackedTaskManagerTest {
+
     private static File testFile;
 
     private FileBackedTaskManager manager;
@@ -76,6 +77,7 @@ class FileBackedTaskManagerTest {
         manager.createTask(task1);
         manager.createTask(task2);
         manager.createTask(task3);
+
         manager.save(testFile);
 
         FileBackedTaskManager loadedManager = new FileBackedTaskManager(testFile);

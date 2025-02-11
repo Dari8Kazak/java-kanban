@@ -35,9 +35,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
     @DisplayName("Тест 1: Проверка, что объект Subtask нельзя сделать своим же эпиком")
     @Test
     public void testSubtaskCannotBeEpic() {
-        SubTask subTask = new SubTask("Subtask", "Subtask description", 1);
+        SubTask subTask = new SubTask(1, "Subtask", NEW, "Subtask description", 1);
         subTask.setEpicId(2);
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> subTask.setEpicId(subTask.getId()), "Subtask не может быть добавлен как его собственный Epic");
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () ->
+                subTask.setEpicId(subTask.getId()), "Subtask не может быть добавлен как его собственный Epic");
         Assertions.assertEquals("Subtask не может быть добавлен как его собственный Epic.", thrown.getMessage());
     }
 
@@ -107,7 +108,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
         task1.setDuration(Duration.ofMinutes(30));
         task1.setStartTime(LocalDateTime.of(2024, 12, 1, 10, 0));
         taskManager.createTask(task1);
-        int existingId = taskManager.getTaskById(task1.getId()).getId();
+        Integer existingId = taskManager.getTaskById(task1.getId()).getId();
 
         assertEquals(existingId, task1.getId(), "ID должен совпадать с присвоенным ID задачи 1");
 
@@ -124,7 +125,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
         assertEquals(task3.getId(), task1.getId(), "ID задачи 2 должен быть уникальным и не совпадать с ID задачи 1");
 
         Task task4 = new Task("Задача 4", "Описание задачи 4");
-        int newTask4Id = taskManager.getTaskById(task4.getId()).getId();
+        task4.setDuration(Duration.ofMinutes(30));
+        task4.setStartTime(LocalDateTime.of(2024, 11, 1, 11, 0));
+        taskManager.createTask(task4);
+        Integer newTask4Id = taskManager.getTaskById(task4.getId()).getId();
 
         assertNotNull(taskManager.getTaskById(newTask4Id), "Задача 4 должна быть добавлена и найдена по ID");
     }
@@ -133,9 +137,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
     @Test
     void addNewTask() {
         Task task = new Task(1, "Test addNewTask", TaskStatus.NEW, "Test addNewTask Описание");
-        int taskId = taskManager.createTask(task);
+        taskManager.createTask(task);
 
-        Task savedTask = taskManager.getTaskById(taskId);
+        Task savedTask = taskManager.getTaskById(task.getId());
 
         assertNotNull(savedTask, "Задача не найдена.");
         Assertions.assertEquals(task, savedTask, "Задачи не совпадают.");
@@ -152,11 +156,11 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
     @Test
     void createNewEpic() {
         Epic epic = new Epic("Test Epic", "Test Epic Описание");
-        int epicId = taskManager.createEpic(epic);
+        taskManager.createEpic(epic);
 
-        assertTrue(epicId >= 0, "Неверный ID эпика.");
+        assertTrue(epic.getId() >= 0, "Неверный ID эпика.");
 
-        Epic savedEpic = taskManager.getEpicById(epicId);
+        Epic savedEpic = taskManager.getEpicById(epic.getId());
 
         assertNotNull(savedEpic, "Эпик не найден.");
         Assertions.assertEquals(epic, savedEpic, "Эпики не совпадают.");
@@ -188,12 +192,12 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
     @Test
     void updateTask() {
         Task task = new Task("Test задачи", "Test описание задачи");
-        int taskId = taskManager.createTask(task);
+        taskManager.createTask(task);
 
-        Task updatedTask = new Task(taskId, "Обновление описания", TaskStatus.IN_PROGRESS, "Обновление задачи");
+        Task updatedTask = new Task(task.getId(), "Обновление описания", TaskStatus.IN_PROGRESS, "Обновление задачи");
         taskManager.updateTask(updatedTask);
 
-        Task savedTask = taskManager.getTaskById(taskId);
+        Task savedTask = taskManager.getTaskById(task.getId());
 
         assertNotNull(savedTask, "Обновленная задача не найдена.");
         Assertions.assertEquals(updatedTask, savedTask, "Задачи не совпадают после обновления.");
@@ -203,9 +207,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<TaskManager> {
     @Test
     void deleteTaskById() {
         Task task = new Task("Удаление задачи", "Описание");
-        int taskId = taskManager.createTask(task);
+        taskManager.createTask(task);
 
-        taskManager.deleteTaskById(taskId);
+        taskManager.deleteTaskById(task.getId());
 
         // Проверяем, что задача успешно удалена
         assertFalse(taskManager.getAllTasks().contains(task), "Задача должна быть удалена.");

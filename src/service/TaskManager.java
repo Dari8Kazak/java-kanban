@@ -5,20 +5,21 @@ import model.SubTask;
 import model.Task;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
-    int createTask(Task task);
+    Task createTask(Task task);
 
-    int createEpic(Epic epic);
+    Epic createEpic(Epic epic);
 
-    int createSubTask(SubTask subTask);
+    SubTask createSubTask(SubTask subTask);
 
-    void updateTask(Task task);
+    Task updateTask(Task task);
 
-    void updateEpic(Epic epic);
+    Epic updateEpic(Epic epic);
 
-    void updateSubTask(SubTask updSubTask);
+    SubTask updateSubTask(SubTask updSubTask);
 
     void deleteAllTasks();
 
@@ -26,17 +27,17 @@ public interface TaskManager {
 
     void deleteAllSubTasks();
 
-    void deleteTaskById(int taskId);
+    Task deleteTaskById(Integer taskId);
 
-    void deleteEpicById(int epicId);
+    Epic deleteEpicById(Integer epicId);
 
-    void deleteSubTaskById(int subTaskId);
+    SubTask deleteSubTaskById(Integer subTaskId);
 
-    Task getTaskById(int taskId);
+    Task getTaskById(Integer taskId);
 
-    Epic getEpicById(int epicId);
+    Epic getEpicById(Integer epicId);
 
-    SubTask getSubTaskById(int subTaskId);
+    SubTask getSubTaskById(Integer subTaskId);
 
     List<Task> getHistory();
 
@@ -52,5 +53,9 @@ public interface TaskManager {
 
     boolean isTaskTimeIntersect(Task newTask);
 
+    HistoryManager getHistoryManager();
+
     void save();
+
+    TreeSet<Task> getPrioritizedTasks();
 }

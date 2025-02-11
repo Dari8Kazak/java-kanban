@@ -30,11 +30,12 @@ class TestModel {
     void testEpicCannotBeAddedAsSubTaskToItself() {
         // Создаем объект Epic
         Epic epic = new Epic("Epic Task", "Description of the epic");
-        int epicId = epic.getId(); // Получаем ID эпика
+        epic.setId(1);
+        Integer epicId = epic.getId(); // Получаем ID эпика
 
         // Создаем подзадачу с тем же ID, что и у эпика
         SubTask subTask = new SubTask("SubTask", "Description of the subtask", epicId);
-
+        subTask.setId(epicId);
         // Проверяем на выброс исключения
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
             subTask.setEpicId(epicId);
